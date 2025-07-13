@@ -6,22 +6,23 @@ const ThumbnailCard = () => {
   const { product, setProduct } = useProduct();
   const fileInputRef = useRef();
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const handleImageChange = (e) => { 
+  const file = e.target.files[0];
+  if (!file) return;
 
-    if (['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
-      const imageUrl = URL.createObjectURL(file);
+  if (['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
+    const imageUrl = URL.createObjectURL(file);
 
-      setProduct(prev => ({
-        ...prev,
-        image: imageUrl,
-        imageFile: file, // يمكن تخزين الملف الأصلي للرفع لاحقًا
-      }));
-    } else {
-      alert('يرجى اختيار صورة بصيغة PNG أو JPG أو JPEG');
-    }
-  };
+    setProduct(prev => ({
+      ...prev,
+      image: imageUrl,       // 👈 هذا فقط للعرض
+      imageFile: file,       // ✅ هذا هو اللي رح نرسله للباك
+    }));
+  } else {
+    alert('يرجى اختيار صورة بصيغة PNG أو JPG أو JPEG');
+  }
+};
+
 
   return (
     <Card

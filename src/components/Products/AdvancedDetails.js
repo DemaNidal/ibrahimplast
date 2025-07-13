@@ -2,13 +2,15 @@ import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import CustomDropDown from '../dropdown/CustomDropDown';
 import { useLookupData } from '../../hooks/useLookupData';
-import { fetchUnits, fetchSizeUnits } from '../../services/lookupService';
+import { fetchUnits, fetchSizeUnits,fetchwarehouse } from '../../services/lookupService';
 import { useProduct } from '../../context/ProductContext'; // ← أهم سطر
 import '../../styles/productCard.css';
 
 const AdvancedDetails = () => {
   const unitOptions = useLookupData(fetchUnits, 'unit_id', 'unit_name');
   const sizeUnitOptions = useLookupData(fetchSizeUnits, 'size_unit_id', 'size_unit_name');
+
+  const warehouseOptions = useLookupData(fetchwarehouse, 'id', 'name');
   const { product, setProduct } = useProduct(); // ← استدعاء الـ context
 
   const handleInputChange = (e) => {
@@ -20,6 +22,9 @@ const AdvancedDetails = () => {
 
   const handleUnitChange = (selected) => {
     setProduct(prev => ({ ...prev, unit: selected?.value }));
+  };
+   const handleWarehouseChange = (selected) => {
+    setProduct(prev => ({ ...prev, warehouse: selected?.value }));
   };
 
   const handleSizeUnitChange = (selected) => {
@@ -77,16 +82,31 @@ const AdvancedDetails = () => {
             </Col>
           </Row>
 
-          <Form.Group className="mb-3" controlId="location">
-            <Form.Label>الموقع</Form.Label>
-            <Form.Control
-              type="text"
-              name="location"
-              value={product.location}
-              onChange={handleInputChange}
-              placeholder="أدخل موقع المنتج"
-            />
-          </Form.Group>
+          <Row className='mb-3'>
+            <Col md={6} >
+              <Form.Group className="mb-3" controlId="location">
+                <Form.Label>الموقع</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="location"
+                  value={product.location}
+                  onChange={handleInputChange}
+                  placeholder="أدخل موقع المنتج"
+                />
+
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <CustomDropDown
+                options={warehouseOptions}
+                label="المخزن"
+                placeholder="اختر المخزن"
+                onChange={handleWarehouseChange}
+              />
+            </Col>
+
+          </Row>
+
         </Form>
       </Card.Body>
     </Card>

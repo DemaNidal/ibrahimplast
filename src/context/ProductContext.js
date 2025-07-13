@@ -4,24 +4,30 @@ import { createContext, useContext, useState } from 'react';
 
 const ProductContext = createContext();
 
+
+
 export const ProductProvider = ({ children }) => {
-  const [product, setProduct] = useState({
-    name: '',
-    description: '',
-    category: null,
-    color: null,
-    currency: null,
-    madeFrom: null,
-    usage: null,
-    unit: null,
-    sizeUnit: null,
-    quantity: '',
-    volume: '',
-    location: '',
-    price: '',
-    barcode: '',
-    image: ''
-  });
+ const [product, setProduct] = useState({
+  name: '',
+  notes: '',
+  category: '',
+  color: '',
+  currency: '',
+  madeFrom: '',
+  unit: '',
+  usage: '',
+  quantity: '',
+  price: '',
+  size_value: '',
+  sizeUnit: '',
+  location: '',
+  warehouse:'',
+  image: null, // 👈 صح للعرض فقط
+  imageFile: null,
+
+});
+
+
 
   return (
     <ProductContext.Provider value={{ product, setProduct }}>

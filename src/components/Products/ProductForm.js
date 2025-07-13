@@ -8,15 +8,39 @@ import MadeFromCard from './MadeFromCard';
 import ColorCard from './ColorCard';
 import ProductDetails from './ProductDetails';
 import AdvancedDetails from './AdvancedDetails';
-import BarcodeCard from './Barcode';
+import { useProduct } from '../../context/ProductContext';
+import { createProduct } from '../../services/productService';
+
+
 
 const ProductForm = () => {
-  // مستقبلاً: هنا ممكن تضيف useState لتجميع formData من كل كرت
+ const { product } = useProduct();
 
-  const handleSave = () => {
-    // 🧠 TODO: اجمع كل البيانات وارسِلها للـ API
-    console.log("تم الضغط على حفظ التغييرات");
-  };
+const handleSave = async (e) => {
+  e.preventDefault();
+
+  try {
+    const formData = new FormData();
+
+    Object.entries(product).forEach(([key, value]) => {
+      if (key !== 'imageFile' && value !== null && value !== '') {
+        formData.append(key, value);
+      }
+    });
+
+    if (product.imageFile) {
+      formData.append('image', product.imageFile);
+    }
+
+    await createProduct(formData);
+    alert('تمت إضافة المنتج بنجاح ✅');
+    
+  } catch (error) {
+    console.error(error);
+    alert('حدث خطأ أثناء إضافة المنتج ❌');
+  }
+};
+
 
   const handleCancel = () => {
     // 🧠 TODO: احذف التغييرات أو أرجع للصفحة السابقة
@@ -41,12 +65,7 @@ const ProductForm = () => {
           <GeneralForm />
           <PricingCard />
           <AdvancedDetails />
-          <BarcodeCard itemId={null} /> {/* مرر itemId إذا المنتج محفوظ */}
-        </Col>
-      </Row>
-
-      <Row>
-        <Col className="d-flex justify-content-end" style={{ gap: '16px' }}>
+          <Col className="d-flex justify-content-end" style={{ gap: '16px' }}>
           <Button variant="primary" size="lg" onClick={handleSave}>
             💾 حفظ التغييرات
           </Button>
@@ -54,6 +73,11 @@ const ProductForm = () => {
             إلغاء
           </Button>
         </Col>
+        </Col>
+      </Row>
+
+      <Row>
+        
       </Row>
     </Container>
   );
