@@ -22,7 +22,7 @@ const Login = () => {
     }
   };
   return (
-     <div className="container d-flex align-items-center justify-content-center vh-100" style={{ backgroundColor: '#f8f9fa' }}>
+     <div className="container d-flex align-items-center justify-content-center vh-100">
       <div className="card p-4 shadow" style={{ width: '400px' }}>
         <div className="text-center mb-4">
           <img src="/logo192.png" alt="Al Ibrahem Plast" style={{ width: '200px' }} />

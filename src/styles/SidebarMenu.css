@@ -1,0 +1,31 @@
+body {
+     
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+     height: 100vh;
+     background: #ffffff;
+     font-size: 24px;
+}
+.app {
+     background: #a8d5e5;
+      height: auto !important;
+  min-height: 100vh;
+  position: sticky; /* يخليه ثابت على اليسار */
+  top: 0;
+}
+h1 {
+     color: #165a72;
+     margin: 50px auto;
+     font-size: 30px;
+}
+.menu1 {
+     margin-bottom: 40px;
+     margin-top: 20px;
+}
+h2 {
+     color: #165a72;
+}
+.dashboard-layout {
+  min-height: 100vh; /* خليه يطول مع المحتوى */
+  align-items: stretch;
+}

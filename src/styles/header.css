@@ -1,19 +1,75 @@
-.icon-button {
-  width: 40px;
-  height: 40px;
-  background-color: #e8eaed;
-  border-radius: 50%;
+
+.header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0px 24px;
+  /*background-color: #f4f3f8;*/
+  border-bottom: 1px solid #e5e5e5;
+  font-family: Arial, sans-serif;
+ background-color: white;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shopping-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #f4f4f7;
+  border-radius: 4px;
+  padding: 6px 10px;
+  width: 500px;
+  max-width: 100%;
+}
+
+.search-bar input {
+  border: none;
+  background: transparent;
+  outline: none;
+  flex-grow: 1;
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+.search-icon {
+  color: #555;
+}
+
+.camera-icon {
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
-.icon-button:hover {
-  background-color: #d6d8db;
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.profile-image:hover {
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+.icon {
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+}
+
+.profile-icon {
+  background-color: #a2a2b0;
+  padding: 8px;
+  border-radius: 50%;
+  color: white;
 }

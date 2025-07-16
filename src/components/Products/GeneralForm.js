@@ -15,9 +15,9 @@ const GeneralForm = () => {
 
   return (
     <Card
-      className="outline-card border-0"
+      className="outline-card border-0" 
     >
-      <Card.Body>
+      <Card.Body >
         <h5 className="mb-3">عام</h5>
         <Form>
           {/* اسم المنتج */}

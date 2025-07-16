@@ -1,35 +1,34 @@
 import React from 'react';
-import { Dropdown } from 'react-bootstrap';
-import '../styles/header.css'
-
+import '../styles/header.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IoCameraOutline } from "react-icons/io5";
+import { faBarsStaggered , faUser, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 const Header = () => {
   return (
-    <div className="d-flex justify-content-between align-items-center px-4 py-3 bg-light shadow-sm rounded" style={{ height: '70px' }}>
+    <div className="header">
+      <div className="header-left">
+        {/* <img
+          src="/dd0b5ae2-cc26-4a80-ae13-b5d95f97b769.png"
+          alt="Shopping icon"
+          className="shopping-icon"
+        /> */}
+          <img src="/logo192.png" alt="Al Ibrahem Plast" style={{ width: '120px' }} />
 
-      <div className="d-flex align-items-center gap-3">
-         {/* صورة البروفايل */}
-        <Dropdown align="start">
-          <Dropdown.Toggle as="div" className="profile-image rounded-circle" role="button">
-            <img
-              src="/profile.png"
-              alt="User"
-              style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '50%' }}
-            />
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item>الملف الشخصي</Dropdown.Item>
-            <Dropdown.Item>الإعدادات</Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item>تسجيل الخروج</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        <span className="title">الابراهيم بلاست</span>
+      </div>
 
-        {/* أيقونة التطبيقات */}
-        <div className="icon-button">
-          <i className="bi bi-grid-3x3-gap-fill"></i>
-        </div>
+      <div className="search-bar">
+        <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
+        <input type="text" placeholder="bag" />
+        
+        <IoCameraOutline 
+          className="camera-icon"
+        />
+      </div>
 
-       
+      <div className="header-right">
+        <FontAwesomeIcon icon={faBarsStaggered} />
+        <FontAwesomeIcon className="icon profile-icon" icon={faUser} />
       </div>
     </div>
   );

@@ -1,22 +1,25 @@
-import React from 'react'
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Login from '../pages/login/Login'
+import Login from '../pages/login/Login';
 import AddProduct from '../pages/AddProduct';
-import ProductForm from '../components/Products/ProductForm';
 import Dashboard from '../pages/Dashboard';
-import SearchPage from '../pages/SearchPage';
+import DashboardLayout from '../layout/DashboardLayout';
+import SearchProduct from '../pages/SearchProduct';
 
-function Router() {
+function AppRouter() {
   return (
-      <Routes>
+    <Routes>
+      <Route path="/" element={<DashboardLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="addproduct" element={<AddProduct />} />
+        <Route path="search" element={<SearchProduct />} />
+        {/* أضف صفحات أخرى هنا */}
+      </Route>
+
       <Route path="/login" element={<Login />} />
-      <Route path="/addproduct" element={<AddProduct />} />
-      <Route path="/productform" element={<ProductForm />} />
-      <Route path="/" element={<Dashboard />} />
-      <Route path='/search' element={<SearchPage />} />
-      
     </Routes>
-  )
+    
+  );
 }
 
-export default Router
+export default AppRouter;
