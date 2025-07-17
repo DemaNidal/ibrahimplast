@@ -66,7 +66,7 @@ const handleSave = async (e) => {
           <PricingCard />
           <AdvancedDetails />
           <Col className="d-flex justify-content-end" style={{ gap: '16px' }}>
-          <Button variant="primary" size="lg" onClick={handleSave}>
+          <Button variant="" size="lg" onClick={handleSave}>
             💾 حفظ التغييرات
           </Button>
           <Button variant="secondary" size="lg" onClick={handleCancel}>

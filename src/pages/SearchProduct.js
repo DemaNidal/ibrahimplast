@@ -1,21 +1,29 @@
 import React, { useState } from "react";
 import "../styles/SearchProduct.css";
-
+import ProductCard from "../components/Products/ProductCard";
 import testImage from "../assets/test.png";
-const products = [
-  { name: "Beige Handbag", price: "$200", sold: 382, outOfStock: false },
-  { name: "Pink Quilted Bag", price: "$200", sold: 382, outOfStock: false },
-  { name: "Small Handbag", price: "$150", sold: 382, outOfStock: false },
-  { name: "Pink Quilted Bag", price: "$200", sold: 382, outOfStock: false },
-  { name: "Velvet Shoes", price: "$200", sold: 382, outOfStock: true },
-  { name: "Satchel Bag", price: "$150", sold: 382, outOfStock: true },
-  { name: "Beige Handbag", price: "$140", sold: 382, outOfStock: false },
-  { name: "Beige Handbag", price: "$200", sold: 382, outOfStock: false },
-  { name: "Purple Handbag", price: "$200", sold: 382, outOfStock: false },
-];
+import CustomDropDown from "../components/dropdown/CustomDropDown";
+// const products = [
+//   { name: "Beige Handbag", price: "$200", sold: 382, outOfStock: false },
+//   { name: "Pink Quilted Bag", price: "$200", sold: 382, outOfStock: false },
+//   { name: "Small Handbag", price: "$150", sold: 382, outOfStock: false },
+//   { name: "Pink Quilted Bag", price: "$200", sold: 382, outOfStock: false },
+//   { name: "Velvet Shoes", price: "$200", sold: 382, outOfStock: true },
+//   { name: "Satchel Bag", price: "$150", sold: 382, outOfStock: true },
+//   { name: "Beige Handbag", price: "$140", sold: 382, outOfStock: false },
+//   { name: "Beige Handbag", price: "$200", sold: 382, outOfStock: false },
+//   { name: "Purple Handbag", price: "$200", sold: 382, outOfStock: false },
+// ];
 
 const SearchProduct = () => {
-    const [showImage, setShowImage] = useState(true);
+  const rawOptions = ["أضيف حديثا", "الأقدم"];
+
+  const dropdownOptions = rawOptions.map((text) => ({
+    label: text,
+    value: text.replace(/\s/g, "-").toLowerCase(), // ex: "أضيف حديثا" → "أضيف-حديثا"
+  }));
+
+  const [showImage, setShowImage] = useState(true);
   const [hideAnimation, setHideAnimation] = useState(false);
 
   const handleClose = () => {
@@ -40,116 +48,140 @@ const SearchProduct = () => {
           </div>
         </div>
       )}
-        <div className="top-bar">
-  <div className="product-count">1001 منتج</div>
-  <select className="sort-dropdown">
-    <option>Sort by Featured</option>
-  </select>
-</div>
+      <div className="top-bar">
+        <div className="product-count">1001 منتج</div>
+        {/* <select className="sort-dropdown">
+          <option>اضيف حديثا</option>
+          <option>الاقدم</option>
+        </select> */}
+        <CustomDropDown options={dropdownOptions} />
+      </div>
 
       <div className="content">
-       
-        <div className="filters">
+        <div className="filters" dir="rtl">
           <div className="filter-header">
-            <span>تصفيه</span>
-            <button>مسح الكل</button>
+            <span style={{ fontWeight: "600" }}>تصفيه</span>
           </div>
 
           <div className="filter-group">
-    <h4>الفئة</h4>
-    <label><input type="checkbox" /> أغطية</label>
-    <label><input type="checkbox" /> بخاخات</label>
-    <label><input type="checkbox" /> زجاج</label>
-    <label><input type="checkbox" /> علب بلاستيك</label>
-    <label><input type="checkbox" /> جلان</label>
-    <label><input type="checkbox" /> سلندرات</label>
-    <label><input type="checkbox" /> محارم</label>
-    <label><input type="checkbox" /> كاسات</label>
-    <label><input type="checkbox" /> سطل</label>
-    <label><input type="checkbox" /> مطبوعات</label>
-    <label><input type="checkbox" /> رولات</label>
-    <label><input type="checkbox" /> مادة خام</label>
-  </div>
-
-          <div className="filter-group">
-            <h4>Size</h4>
+            <div className="row">
+              <div className="col">
+                <h4>الفئة</h4>
+              </div>
+              <div className="col">
+                <button>مسح الكل</button>
+              </div>
+            </div>
             <label>
-              <input type="checkbox" /> S
+              <input type="checkbox" /> أغطية
             </label>
             <label>
-              <input type="checkbox" /> M
+              <input type="checkbox" /> بخاخات
             </label>
             <label>
-              <input type="checkbox" /> L
-            </label>
-          </div>
-
-          <div className="filter-group">
-            <h4>Price ($)</h4>
-            <input type="range" min="0" max="1000" />
-          </div>
-
-          <div className="filter-group">
-            <h4>Deals & Discounts</h4>
-            <label>
-              <input type="checkbox" /> All Discounts
+              <input type="checkbox" /> زجاج
             </label>
             <label>
-              <input type="checkbox" /> Today’s Deals
-            </label>
-          </div>
-
-          <div className="filter-group">
-            <h4>New Arrivals</h4>
-            <label>
-              <input type="checkbox" /> Last 7 days
+              <input type="checkbox" /> علب بلاستيك
             </label>
             <label>
-              <input type="checkbox" /> Last 30 days
+              <input type="checkbox" /> جلان
             </label>
             <label>
-              <input type="checkbox" /> Last 90 days
+              <input type="checkbox" /> سلندرات
+            </label>
+            <label>
+              <input type="checkbox" /> محارم
+            </label>
+            <label>
+              <input type="checkbox" /> كاسات
+            </label>
+            <label>
+              <input type="checkbox" /> سطل
+            </label>
+            <label>
+              <input type="checkbox" /> مطبوعات
+            </label>
+            <label>
+              <input type="checkbox" /> رولات
+            </label>
+            <label>
+              <input type="checkbox" /> مادة خام
             </label>
           </div>
 
           <div className="filter-group">
-            <h4>Rating</h4>
+            <h4>مصنوع من</h4>
             <label>
-              <input type="checkbox" /> ★★★★★
+              <input type="radio" name="material" value="بلاستيك" /> بلاستيك
             </label>
             <label>
-              <input type="checkbox" /> ★★★★☆
+              <input type="radio" name="material" value="زجاج" /> زجاج
             </label>
             <label>
-              <input type="checkbox" /> ★★★☆☆
+              <input type="radio" name="material" value="فلين" /> فلين
             </label>
             <label>
-              <input type="checkbox" /> ★★☆☆☆
+              <input type="radio" name="material" value="بوليستر" /> بوليستر
             </label>
             <label>
-              <input type="checkbox" /> ★☆☆☆☆
+              <input type="radio" name="material" value="سيليكون" /> سيليكون
             </label>
+          </div>
+
+          <div className="filter-group">
+            <h4>الحجم</h4>
+            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <input placeholder="الحجم" className="size-input" />
+              <select className="size-unit">
+                <option value="cm">سم</option>
+                <option value="m">متر</option>
+                <option value="inch">إنش</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="filter-group">
+            <h4>مكان التخزين</h4>
+            <label>
+              <input type="radio" name="material" value="بلاستيك" /> الساحة
+            </label>
+            <label>
+              <input type="radio" name="material" value="زجاج" /> الطابق 3
+            </label>
+            <label>
+              <input type="radio" name="material" value="فلين" /> الطابق 2
+            </label>
+            <label>
+              <input type="radio" name="material" value="بوليستر" /> الطابق 1
+            </label>
+            <label>
+              <input type="radio" name="material" value="سيليكون" /> البركس
+            </label>
+            <label>
+              <input type="radio" name="material" value="سيليكون" /> البيارة
+            </label>
+          </div>
+          <div className="filter-group">
+            <h4>الباركود</h4>
+            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <input placeholder="الباركود" className="size-input" />
+            </div>
           </div>
         </div>
 
         <div className="product-grid">
-          {products.map((product, i) => (
-            <div className="product-card" key={i}>
-              <div className="product-img">
-                <img src={testImage} alt={product.name} />
-                {product.outOfStock && (
-                  <span className="badge">Out of Stock</span>
-                )}
-                <span className="like-btn">♡</span>
-              </div>
-              <div className="product-info">
-                <div className="product-name">{product.name}</div>
-                <div className="product-price">{product.price}</div>
-                <div className="rating">★★★★★</div>
-                <div className="sold">{product.sold} items sold</div>
-              </div>
-            </div>
-          ))}
+            <ProductCard />
+             <ProductCard />
+              <ProductCard />
+               <ProductCard />
+                <ProductCard />
+
+                 <ProductCard />
+                  <ProductCard />
+                   <ProductCard />
+                    <ProductCard />
+                     <ProductCard />
         </div>
       </div>
 

@@ -1,3 +1,4 @@
+
 /* الصفحة العامة */
 .search-page {
   font-family: Arial, sans-serif;
@@ -7,6 +8,7 @@
 /* العنوان */
 h2 {
   margin-bottom: 20px;
+  font-family: "Cairo", sans-serif ; 
 }
 .image-wrapper {
   position: relative;
@@ -47,9 +49,10 @@ h2 {
   width: 250px;
   height: 250px;
   object-fit: cover;
-  background-color: #eee;
   border-radius: 6px;
   flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
 }
 
 .top-section-right {
@@ -70,152 +73,116 @@ h2 {
 }
 
 .product-count {
-  font-size: 16px;
-  font-weight: bold;
+  
+  font-weight: 400;
   flex-grow: 1;
 }
 
 .sort-dropdown {
-  padding: 6px 10px;
-  font-size: 14px;
+   padding-left: 5px;
+   padding-bottom: 8px;
+   padding-top: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
   min-width: 180px;
+  width: 200px;
+}
+
+.size-input {
+  flex: 1;
+  width: 100%;
+}
+
+.size-unit {
+  width: 80px;
 }
 
 /* الهيكل العام للمحتوى */
 .content {
   display: flex;
   gap: 20px;
+  align-items: flex-start;
 }
 
 .filters {
-  display: grid;
-  grid-template-columns: 1fr; /* عمود واحد على الموبايل */
-  gap: 20px;
-  width: 250px;
-  flex-shrink: 0;
-  padding: 10px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 220px;
+  padding: 16px;
+ /* background-color: #fff;*/
+  border-radius: 12px;
+   max-height: 90vh;     /* منع الامتداد الكامل للصفحة */
+  /*overflow-y: auto;   */  /* إضافة تمرير رأسي إذا طال المحتوى */
+  /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-/* عنوان قسم الفلاتر */
-.filter-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* عنوان رئيسي */
+.filter-header span {
+  font-size: 20px;
+  font-weight: 700;
+  display: block;
   margin-bottom: 10px;
 }
 
-.filter-header button {
+/* كل مجموعة فلاتر */
+.filter-group {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+}
+
+.filter-group:last-child {
+  border-bottom: none;
+}
+
+.col button {
   background: none;
   border: none;
   color: #007bff;
   cursor: pointer;
+  font-size: 14px;
+  padding: 0;
 }
 
-.filter-group {
-  direction: rtl;
-}
 
+/* عنوان الفرع */
 .filter-group h4 {
-  margin-bottom: 10px;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
 }
 
 .filter-group label {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  gap: 8px;
   font-size: 14px;
-  width: 48%; /* حتى يترتبوا جنب بعض */
+  color: #333;
   margin-bottom: 8px;
+}
+
+
+/* تعديل لون وحجم الـ inputs */
+.filters input[type="checkbox"],
+.filters input[type="radio"] {
+  accent-color: #007bff;
+  cursor: pointer;
+  transform: scale(1.1);
 }
 
 /* شبكة المنتجات */
 .product-grid {
+flex: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 20px;
-  flex-grow: 1;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 20px 0;
 }
 
-/* كرت المنتج */
-.product-card {
-  background: #f8f8f8;
-  border-radius: 6px;
-  padding: 10px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
 
-/* صورة المنتج */
-.product-img {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  background-color: #ddd;
-  border-radius: 4px;
-  overflow: hidden;
-}
 
-.product-img img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* شارة المنتج */
-.badge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: #2d2d2d;
-  color: white;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 3px;
-}
-
-/* زر الإعجاب */
-.like-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 18px;
-  color: #555;
-  cursor: pointer;
-}
-
-/* معلومات المنتج */
-.product-info {
-  margin-top: 10px;
-}
-
-.product-name {
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.product-price {
-  color: #333;
-  margin: 5px 0;
-}
-
-.rating {
-  font-size: 12px;
-  color: #f8ce0b;
-}
-
-.sold {
-  font-size: 12px;
-  color: #777;
-}
 
 /* الترقيم (Pagination) */
 .pagination {
@@ -237,3 +204,17 @@ h2 {
   background: #000;
   color: white;
 }
+
+.product-card {
+  width: 100%;
+  max-width: 100%; /* خلّيه ياخد كامل العرض المتاح له داخل الـ grid */
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+

@@ -4,7 +4,7 @@ import CustomDropDown from '../dropdown/CustomDropDown';
 import { useLookupData } from '../../hooks/useLookupData';
 import { fetchUnits, fetchSizeUnits,fetchwarehouse } from '../../services/lookupService';
 import { useProduct } from '../../context/ProductContext'; // ← أهم سطر
-import '../../styles/productCard.css';
+import '../../styles/advanceproductCard.css';
 
 const AdvancedDetails = () => {
   const unitOptions = useLookupData(fetchUnits, 'unit_id', 'unit_name');
