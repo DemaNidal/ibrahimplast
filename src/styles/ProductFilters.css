@@ -1,0 +1,68 @@
+
+.filters {
+  width: 220px;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 12px;
+   max-height: 200vh;     /* منع الامتداد الكامل للصفحة */
+  /*overflow-y: auto;   */  /* إضافة تمرير رأسي إذا طال المحتوى */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* عنوان رئيسي */
+.filter-header span {
+  font-size: 20px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* كل مجموعة فلاتر */
+.filter-group {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+}
+
+.filter-group:last-child {
+  border-bottom: none;
+}
+
+.col button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+}
+
+
+/* عنوان الفرع */
+.filter-group h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.filter-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+
+/* تعديل لون وحجم الـ inputs */
+.filters input[type="checkbox"],
+.filters input[type="radio"] {
+  accent-color: #007bff;
+  cursor: pointer;
+  transform: scale(1.1);
+}
