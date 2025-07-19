@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "../styles/SearchProduct.css";
 import ProductCard from "../components/Products/ProductCard";
-import testImage from "../assets/test.png";
 import CustomDropDown from "../components/dropdown/CustomDropDown";
 import ProductFilters from "../components/Filters/ProductFilters";
+import TopSection from "../components/Filters/TopSection";
 
 
 const SearchProduct = () => {
@@ -25,22 +25,9 @@ const SearchProduct = () => {
   };
   return (
     <div className="search-page">
-      {showImage && (
-        <div className={`top-section ${hideAnimation ? "fade-out" : ""}`}>
-          <div className="image-wrapper">
-            <img src={testImage} alt="Search match" className="search-image" />
-            <button
-              className="close-button"
-              onClick={handleClose}
-              aria-label="إغلاق الصورة"
-            >
-              ×
-            </button>
-          </div>
-        </div>
+    {showImage && (
+        <TopSection onClose={handleClose} hideAnimation={hideAnimation} />
       )}
-
-
       <div className="content">
         <ProductFilters />
 
