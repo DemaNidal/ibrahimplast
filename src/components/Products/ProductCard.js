@@ -4,52 +4,70 @@ import {
   MDBCardBody,
   MDBCardImage,
   MDBCardTitle,
-  MDBIcon,
 } from "mdb-react-ui-kit";
-import imgB from '../../assets/بخاخ ذهبي كبير.png';
-
+import imgB from "../../assets/facom.png";
 
 function ProductCard() {
   return (
-    <MDBCard className="text-black product-card h-100">
-      <MDBIcon fab icon="apple" size="lg" className="px-3 pt-3 pb-2" />
+    <MDBCard
+      dir="rtl"
+      className="text-black product-card h-100 shadow-sm rounded-4 overflow-hidden"
+      style={{
+        transition: "transform 0.2s",
+        cursor: "pointer",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+    >
       <MDBCardImage
         src={imgB}
+        alt="صورة المنتج"
         position="top"
-        alt="Apple Computer"
-        style={{ width: "100%",
-  height: "250px",       /* اضبط الارتفاع حسب ما يناسبك */
- objectFit: "cover",
- objectPosition: "center",   /* هذا يجعل الصورة تقطع الزائد وتملأ المساحة بشكل جميل */
-  borderTopLeftRadius: "0.5rem", /* نفس تنسيق MDBCard */
-  borderTopRightRadius:" 0.5rem"}}
+        style={{
+          aspectRatio: "4 / 3",
+          objectFit: "contain",
+          objectPosition: "center",
+          backgroundColor: "#f8f8f8",
+          display: "block",
+          width: "100%",
+        }}
       />
-      <MDBCardBody>
-        <div className="text-center">
-          <MDBCardTitle>بخاخ زيت ابيض</MDBCardTitle>
-          <p className="text-muted mb-4">الطابق الاول</p>
+
+      <MDBCardBody className="p-4">
+        <div className="text-center mb-3">
+          <MDBCardTitle
+            className="fs-5 fw-bold mb-1 text-truncate"
+            style={{ maxWidth: "100%" }}
+          >
+            بخاخ زيت أبيض
+          </MDBCardTitle>
+          <p className="text-muted small">الطابق الأول</p>
         </div>
-        <div>
-          <div className="d-flex justify-content-between">
-            <span>الحجم</span>
-            <span>ا لتر</span>
-          </div>
-          <div className="d-flex justify-content-between">
-            <span>السعر</span>
-            <span>$999</span>
-          </div>
-          <div className="d-flex justify-content-between">
-            <span>اللون</span>
-            <span>الاحمر</span>
-          </div>
-          <div className="d-flex justify-content-between">
-            <span>الكمية</span>
-            <span>13*152</span>
-          </div>
+
+        <div className="mb-2">
+          {[
+            { label: "الحجم", value: "1 لتر" },
+            { label: "السعر", value: "$999" },
+            { label: "اللون", value: "الأحمر" },
+            { label: "الكمية", value: "13 × 152 كرتونة" },
+          ].map((item, idx) => (
+            <div className="d-flex justify-content-between" key={idx}>
+              <span className="text-muted">{item.label}</span>
+              <span className="fw-semibold">{item.value}</span>
+            </div>
+          ))}
         </div>
-        <div className="d-flex justify-content-between total font-weight-bold mt-4">
-          <span>الرصيد</span>
-          <span>7,197.00</span>
+
+        <hr className="my-3" />
+
+        <div className="d-flex justify-content-between align-items-center">
+          <span className="fw-semibold text-muted">الرصيد</span>
+          <span
+            style={{ color: "#C49A6C ", fontWeight: "600", fontSize: "1.1rem" }}
+          >
+            7,197.00  
+          </span>
+          
         </div>
       </MDBCardBody>
     </MDBCard>

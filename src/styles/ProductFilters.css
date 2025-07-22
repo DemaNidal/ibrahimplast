@@ -1,11 +1,9 @@
-
 .filters {
   width: 220px;
   padding: 16px;
   background-color: #fff;
   border-radius: 12px;
-   max-height: 200vh;     /* منع الامتداد الكامل للصفحة */
-  /*overflow-y: auto;   */  /* إضافة تمرير رأسي إذا طال المحتوى */
+  max-height: 200vh;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
   display: flex;
@@ -13,7 +11,10 @@
   gap: 24px;
 }
 
-/* عنوان رئيسي */
+.filter-header {
+  margin-bottom: 16px;
+}
+
 .filter-header span {
   font-size: 20px;
   font-weight: 700;
@@ -21,10 +22,9 @@
   margin-bottom: 10px;
 }
 
-/* كل مجموعة فلاتر */
 .filter-group {
   border-bottom: 1px solid #eee;
-  padding-bottom: 12px;
+  padding-bottom: 20px;
 }
 
 .filter-group:last-child {
@@ -40,13 +40,34 @@
   padding: 0;
 }
 
-
-/* عنوان الفرع */
 .filter-group h4 {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 12px;
   color: #333;
+}
+
+/* أهم تعديل هنا */
+.filters .form-check {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.filters .form-check-input {
+  accent-color: #4CAF50 !important;
+  transform: scale(1.15);
+  margin: 0 !important;
+  cursor: pointer;
+}
+
+.filters .form-check-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+  padding: 0;
 }
 
 .filter-group label {
@@ -56,13 +77,18 @@
   font-size: 14px;
   color: #333;
   margin-bottom: 8px;
+  font-weight: 500;
 }
 
 
-/* تعديل لون وحجم الـ inputs */
-.filters input[type="checkbox"],
-.filters input[type="radio"] {
-  accent-color: #007bff;
-  cursor: pointer;
-  transform: scale(1.1);
+.form-check-input[type='checkbox']:checked {
+  background-color: #C49A6C ;
+  border-color: #C49A6C ;
+  box-shadow: #333;
+}
+
+.form-check-input[type='radio']:checked {
+  background-color: #C49A6C ;
+  border-color: #C49A6C ;
+  box-shadow: #333;
 }

@@ -9,10 +9,12 @@ export const useLookupData = (fetchFunction, idKey, nameKey) => {
     const loadData = async () => {
       try {
         const res = await fetchFunction();
+        console.log("ppppppppppppppppp"+res);
         const formatted = res.data.map(item => ({
           value: item[idKey],
           label: item[nameKey]
         }));
+        console.log(formatted);
         setOptions(formatted);
       } catch (err) {
         console.error('Failed to fetch lookup data', err);

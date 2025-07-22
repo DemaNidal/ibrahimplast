@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import "../styles/SearchProduct.css";
 import ProductCard from "../components/Products/ProductCard";
 import CustomDropDown from "../components/dropdown/CustomDropDown";
 import ProductFilters from "../components/Filters/ProductFilters";
-import TopSection from "../components/Filters/TopSection";
+//import TopSection from "../components/Filters/TopSection";
 
 
 const SearchProduct = () => {
@@ -14,20 +14,20 @@ const SearchProduct = () => {
     value: text.replace(/\s/g, "-").toLowerCase(), // ex: "أضيف حديثا" → "أضيف-حديثا"
   }));
 
-  const [showImage, setShowImage] = useState(true);
-  const [hideAnimation, setHideAnimation] = useState(false);
+  // const [showImage, setShowImage] = useState(true);
+  // const [hideAnimation, setHideAnimation] = useState(false);
 
-  const handleClose = () => {
-    setHideAnimation(true);
-    setTimeout(() => {
-      setShowImage(false);
-    }, 300); // نفس مدة الأنيميشن
-  };
+  // const handleClose = () => {
+  //   setHideAnimation(true);
+  //   setTimeout(() => {
+  //     setShowImage(false);
+  //   }, 300); // نفس مدة الأنيميشن
+  // };
   return (
     <div className="search-page">
-    {showImage && (
+    {/* {showImage && (
         <TopSection onClose={handleClose} hideAnimation={hideAnimation} />
-      )}
+      )} */}
       <div className="content">
         <ProductFilters />
 
