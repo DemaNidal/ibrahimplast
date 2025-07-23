@@ -6,4 +6,6 @@ const api = axios.create({
   baseURL: API_URL,
 });
 
+// const imagePath = "../assets/";
+
 export default api;

@@ -8,6 +8,8 @@ import {
 import imgB from "../../assets/facom.png";
 
 function ProductCard() {
+  const status = "غير متوفر"; // أو "متوفر"
+
   return (
     <MDBCard
       dir="rtl"
@@ -19,6 +21,18 @@ function ProductCard() {
       onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
       onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
     >
+       {status === "غير متوفر" && (
+    <div
+      className="position-absolute top-0 start-0 bg-danger text-white px-3 py-1"
+      style={{
+        borderBottomRightRadius: "10px",
+        fontSize: "0.9rem",
+        fontWeight: "bold",
+      }}
+    >
+      غير متوفر
+    </div>
+  )}
       <MDBCardImage
         src={imgB}
         alt="صورة المنتج"

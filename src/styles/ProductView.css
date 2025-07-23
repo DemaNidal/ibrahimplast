@@ -1,0 +1,116 @@
+body {
+  background-color: #ffffff;
+
+  margin: 0;
+  padding: 0;
+}
+
+.product-page {
+  background: linear-gradient(to right, #fdf6e3, #fbe8b4); /* خلفية ذهبية ناعمة */
+    min-height: 90vh;
+
+  padding: 50px 5%;
+  display: flex;
+  align-items: center;
+}
+
+.product-content {
+  display: flex;
+  flex-direction: row-reverse; /* الصورة على اليمين */
+  width: 100%;
+  max-width: 1200px;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+/* معلومات المنتج */
+.product-info {
+  flex: 1;
+  padding: 40px;
+  backdrop-filter: blur(10px); /* key for glassmorphism */
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff; /* light text for contrast */
+   width: 40%;
+  height: auto; /* خلي المحتوى يحدد الطول */
+  max-width: 500px;
+  min-width: 300px;
+box-shadow: 9px 9px 9px rgba(111, 111, 111, 0.5);
+height: 60vh;
+
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+
+
+}
+
+.product-info h2 {
+  font-size: 30px;
+  margin-bottom: 15px;
+  color: #b88c00;
+}
+
+.product-info p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #444;
+}
+
+.product-info ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 25px;
+}
+
+.product-info li {
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+/* زر الشراء */
+.buy-button {
+  padding: 10px 25px;
+  background-color: #f5c518;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buy-button:hover {
+  background-color: #e0ac00;
+}
+
+/* صورة المنتج */
+.product-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  min-width: 300px;
+  position: relative;
+  padding-bottom: 40px; /* مساحة للخيال */
+}
+
+.product-image {
+  height: 70vh;
+  object-fit: contain;
+  z-index: 2;
+}
+
+/* ظل منحني أسفل المنتج */
+.product-shadow {
+  position: absolute;
+  bottom: 20px;
+  width: 40%;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.3), transparent);
+  border-radius: 50%;
+  z-index: 1;
+  filter: blur(4px);
+}
