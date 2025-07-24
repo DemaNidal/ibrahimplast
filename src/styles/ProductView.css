@@ -32,13 +32,13 @@ body {
   padding: 40px;
   backdrop-filter: blur(10px); /* key for glassmorphism */
   -webkit-backdrop-filter: blur(12px);
-  color: #fff; /* light text for contrast */
-   width: 40%;
+  color: #0c0c0c; /* light text for contrast */
+
   height: auto; /* خلي المحتوى يحدد الطول */
   max-width: 500px;
   min-width: 300px;
 box-shadow: 9px 9px 9px rgba(111, 111, 111, 0.5);
-height: 60vh;
+
 
   background: rgba(255, 255, 255, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -51,6 +51,12 @@ height: 60vh;
   font-size: 30px;
   margin-bottom: 15px;
   color: #b88c00;
+}
+.product-category {
+  font-size: 14px;
+  color: #666;
+  display: block;
+  margin-bottom: 5px;
 }
 
 .product-info p {
@@ -68,6 +74,18 @@ height: 60vh;
 .product-info li {
   margin-bottom: 10px;
   font-size: 15px;
+}
+.location-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 /* زر الشراء */
@@ -113,4 +131,12 @@ height: 60vh;
   border-radius: 50%;
   z-index: 1;
   filter: blur(4px);
+}
+.barcode {
+  margin-top: 30px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: fit-content;
 }
