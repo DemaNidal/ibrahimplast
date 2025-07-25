@@ -1,6 +1,6 @@
 import React from "react";
 import "../../styles/ProductView.css";
-import productImage from "../../assets/بخاخ ذهبي كبير     2.8-2.8-4.7      86.png";
+import productImage from "../../assets/facom.png";
 import { translateArabicColorToCss } from "../../hooks/translateColor";
 import Barcode from "react-barcode";
 
