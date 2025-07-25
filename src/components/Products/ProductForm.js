@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import ThumbnailCard from './ThumbnailCard';
@@ -46,7 +46,16 @@ const handleSave = async (e) => {
     // 🧠 TODO: احذف التغييرات أو أرجع للصفحة السابقة
     console.log("تم الضغط على إلغاء");
   };
-
+const [variants, setVariants] = useState([
+  {
+    quantity_rows: "",
+    quantity_per_row: "",
+    size_value: "",
+    size_unit_id: null,
+    location: "",
+    warehouse_id: null,
+  },
+]);
   return (
     <Container
       fluid
@@ -64,7 +73,7 @@ const handleSave = async (e) => {
         <Col md={9} className="d-flex flex-column" style={{ gap: '20px' }}>
           <GeneralForm />
           <PricingCard />
-          <AdvancedDetails />
+          <AdvancedDetails variants={variants} setVariants={setVariants}/>
           <Col className="d-flex justify-content-end" style={{ gap: '16px' }}>
           <Button variant="" size="lg" onClick={handleSave}>
             💾 حفظ التغييرات
