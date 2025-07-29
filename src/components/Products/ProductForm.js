@@ -74,20 +74,21 @@ const [variants, setVariants] = useState([
           <GeneralForm />
           <PricingCard />
           <AdvancedDetails variants={variants} setVariants={setVariants}/>
-          <Col className="d-flex justify-content-end" style={{ gap: '16px' }}>
-          <Button variant="" size="lg" onClick={handleSave}>
-            💾 حفظ التغييرات
-          </Button>
-          <Button variant="secondary" size="lg" onClick={handleCancel}>
-            إلغاء
-          </Button>
-        </Col>
+          
         </Col>
       </Row>
 
-      <Row>
-        
-      </Row>
+
+  <div className="d-flex justify-content-end gap-3">
+    <Button variant="warning" size="s" onClick={handleSave}>
+      💾 حفظ التغييرات
+    </Button>
+    <Button variant="secondary" size="s" onClick={handleCancel}>
+      إلغاء
+    </Button>
+  </div>
+
+
     </Container>
   );
 };

@@ -64,7 +64,7 @@ const AdvancedDetails = ({ variants, setVariants}) => {
   return (
     <Card className="outline-card border-0">
       <Card.Body>
-        <h5 className="mb-3">تفاصيل إضافية</h5>
+        <h5 className="mb-3">كمية جديدة</h5>
         {variants.map((variant, index) => (
           <div key={index} className="mb-4 border rounded p-3 bg-light">
             <Row className="mb-3">
@@ -158,7 +158,7 @@ const AdvancedDetails = ({ variants, setVariants}) => {
         ))}
 
         <Button variant="outline-primary" onClick={addVariant}>
-          ➕ إضافة متغير جديد
+          ➕ إضافة كمية
         </Button>
       </Card.Body>
     </Card>
