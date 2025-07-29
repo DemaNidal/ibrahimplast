@@ -12,7 +12,7 @@ const MadeFromCard = () => {
   const handleChange = (selected) => {
     setProduct(prev => ({
       ...prev,
-      madeFrom: selected?.value || null,
+      madeFromId: selected?.value || null,
       madeFromName: selected?.label || ''
     }));
   };

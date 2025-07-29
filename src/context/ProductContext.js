@@ -7,26 +7,24 @@ const ProductContext = createContext();
 
 
 export const ProductProvider = ({ children }) => {
- const [product, setProduct] = useState({
+const [product, setProduct] = useState({
   name: '',
   notes: '',
   category: '',
-  color: '',
+  color: [], // 👈 لازم يكون array للألوان المتعددة
   currency: '',
   madeFrom: '',
   unit: '',
   usage: '',
-  quantity: '',
+
   price: '',
   size_value: '',
   sizeUnit: '',
-  location: '',
-  warehouse:'',
-  image: null, // 👈 صح للعرض فقط
+  image: null,
   imageFile: null,
-
+  quantities: [], // 👈 جديد
+  locations: []   // 👈 جديد
 });
-
 
 
   return (

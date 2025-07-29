@@ -1,164 +1,242 @@
-import React from 'react';
-import { Card, Form, Row, Col,Button } from 'react-bootstrap';
-import CustomDropDown from '../dropdown/CustomDropDown';
-//import { useLookupData } from '../../hooks/useLookupData';
-// import { fetchUnits, fetchSizeUnits,fetchwarehouse } from '../../services/lookupService';
-// import { useProduct } from '../../context/ProductContext'; // ← أهم سطر
-import '../../styles/advanceproductCard.css';
+import React from "react";
+import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import CustomDropDown from "../dropdown/CustomDropDown";
+import "../../styles/advanceproductCard.css";
+import { useLookupData } from "../../hooks/useLookupData";
+import {
+  fetchSizeUnits,
+  fetchwarehouse,
+  fetchUnits,
+} from "../../services/lookupService";
+import { useProduct } from "../../context/ProductContext";
 
-const AdvancedDetails = ({ variants, setVariants}) => {
-//  const unitOptions = useLookupData(fetchUnits, 'unit_id', 'unit_name');
-  // const sizeUnitOptions = useLookupData(fetchSizeUnits, 'size_unit_id', 'size_unit_name');
+const AdvancedDetails = () => {
+  const sizeUnitOptions = useLookupData(
+    fetchSizeUnits,
+    "size_unit_id",
+    "size_unit_name"
+  );
+  const warehouseOptions = useLookupData(fetchwarehouse, "id", "name");
+  const unitsOptions = useLookupData(fetchUnits, "unit_id", "unit_name");
 
-  // const warehouseOptions = useLookupData(fetchwarehouse, 'id', 'name');
- // const { product, setProduct } = useProduct(); // ← استدعاء الـ context
+  const { product, setProduct } = useProduct();
 
-  // const handleInputChange = (e) => {
-  //   setProduct(prev => ({
-  //     ...prev,
-  //     [e.target.name]: e.target.value
-  //   }));
-  // };
-
-  // const handleUnitChange = (selected) => {
-  //   setProduct(prev => ({ ...prev, unit: selected?.value }));
-  // };
-  //  const handleWarehouseChange = (selected) => {
-  //   setProduct(prev => ({ ...prev, warehouse: selected?.value }));
-  // };
-
-  // const handleSizeUnitChange = (selected) => {
-  //   setProduct(prev => ({ ...prev, size_unit: selected?.value }));
-  // };
-   const handleVariantChange = (index, field, value) => {
-    const updatedVariants = [...variants];
-    updatedVariants[index][field] = value;
-    setVariants(updatedVariants);
-  };
-   const addVariant = () => {
-    setVariants([
-      ...variants,
-      {
-        quantity_rows: "",
-        quantity_per_row: "",
-        size_value: "",
-        size_unit_id: null,
-        location: "",
-        warehouse_id: null,
-      },
-    ]);
-  };
-  const removeVariant = (index) => {
-    const updatedVariants = variants.filter((_, i) => i !== index);
-    setVariants(updatedVariants);
+  const addQuantity = () => {
+    setProduct((prev) => ({
+      ...prev,
+      quantities: [
+        ...(prev.quantities || []),
+        {
+          rows: "",
+          perRow: "",
+          unit_id: null,
+        },
+      ],
+    }));
   };
 
+  const removeQuantity = (index) => {
+    const updated = product.quantities.filter((_, i) => i !== index);
+    setProduct((prev) => ({ ...prev, quantities: updated }));
+  };
 
-  // const handleChange = (field, value) => {
-  //   setFormData({
-  //     ...formData,
-  //     [field]: value,
-  //   });
-  // };
+  const handleQuantityChange = (index, field, value) => {
+    const updated = [...product.quantities];
+    updated[index][field] = value;
+    setProduct((prev) => ({ ...prev, quantities: updated }));
+  };
+
+  const addLocation = () => {
+    setProduct((prev) => ({
+      ...prev,
+      locations: [
+        ...(prev.locations || []),
+        {
+          location: "",
+          warehouse_id: null,
+        },
+      ],
+    }));
+  };
+
+  const removeLocation = (index) => {
+    const updated = product.locations.filter((_, i) => i !== index);
+    setProduct((prev) => ({ ...prev, locations: updated }));
+  };
+
+  const handleLocationChange = (index, field, value) => {
+    const updated = [...product.locations];
+    updated[index][field] = value;
+    setProduct((prev) => ({ ...prev, locations: updated }));
+  };
 
   return (
     <Card className="outline-card border-0">
       <Card.Body>
-        <h5 className="mb-3">كمية جديدة</h5>
-        {variants.map((variant, index) => (
+        <h5 className="mb-3">الحجم</h5>
+        <Row className="mb-4">
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>قيمة الحجم</Form.Label>
+              <Form.Control
+                type="number"
+                value={product.size_value || ""}
+                onChange={(e) =>
+                  setProduct((prev) => ({
+                    ...prev,
+                    size_value: e.target.value,
+                  }))
+                }
+                placeholder="أدخل قيمة الحجم"
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <CustomDropDown
+                options={sizeUnitOptions}
+                value={
+                  sizeUnitOptions.find(
+                    (opt) => opt.value === product.size_unit_id
+                  ) || null
+                }
+                onChange={(selected) =>
+                  setProduct((prev) => ({
+                    ...prev,
+                    size_unit_id: selected?.value || null,
+                  }))
+                }
+                placeholder="اختر وحدة الحجم"
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row className="mb-4">
+          <CustomDropDown
+            options={unitsOptions}
+            value={
+              unitsOptions.find((opt) => opt.value === product.unit_id) || null
+            }
+            onChange={(selected) =>
+              setProduct((prev) => ({
+                ...prev,
+                unit_id: selected?.value || null,
+              }))
+            }
+            placeholder="اختر الوحدة"
+          />
+        </Row>
+
+        <h5 className="mb-3">الكميات</h5>
+        {(product.quantities || []).map((qty, index) => (
           <div key={index} className="mb-4 border rounded p-3 bg-light">
             <Row className="mb-3">
-              <Col md={6}>
-<Form.Group className="mb-3">
-  <Form.Label>الكمية</Form.Label>
-  <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-    <Form.Control
-      type="number"
-      value={variant.quantity_rows}
-      onChange={(e) => handleVariantChange(index, "quantity_rows", e.target.value)}
-      placeholder="عدد الصفوف"
-      style={{ maxWidth: "100px" }}
-    />
-    <span style={{ fontSize: "1.5rem" }}>×</span>
-    <Form.Control
-      type="number"
-      value={variant.quantity_per_row}
-      onChange={(e) => handleVariantChange(index, "quantity_per_row", e.target.value)}
-      placeholder="عدد القطع"
-      style={{ maxWidth: "100px" }}
-    />
-    <span style={{ fontSize: "1rem", marginInlineStart: "12px" }}>
-      الرصيد: <strong>
-        {(parseInt(variant.quantity_rows) || 0) * (parseInt(variant.quantity_per_row) || 0)}
-      </strong>
-    </span>
-  </div>
-</Form.Group>
-
-
-              </Col>
-            </Row>
-
-            <Row className="mb-3">
-              <Col md={6}>
-                <Form.Group controlId={`size_value_${index}`}>
-                  <Form.Label>الحجم</Form.Label>
-                  <Form.Control
-                    type="number"
-                    value={variant.size_value}
-                    onChange={(e) => handleVariantChange(index, "size_value", e.target.value)}
-                    placeholder="أدخل الحجم"
-                  />
+              <Col md={12}>
+                <Form.Group>
+                  <Form.Label>الكمية</Form.Label>
+                  <div className="d-flex align-items-center flex-wrap gap-2">
+                    <Form.Control
+                      type="number"
+                      value={qty.rows}
+                      onChange={(e) =>
+                        handleQuantityChange(index, "rows", e.target.value)
+                      }
+                      placeholder="عدد الصفوف"
+                      style={{ maxWidth: "100px" }}
+                    />
+                    <span style={{ fontSize: "1.5rem" }}>×</span>
+                    <Form.Control
+                      type="number"
+                      value={qty.perRow}
+                      onChange={(e) =>
+                        handleQuantityChange(index, "perRow", e.target.value)
+                      }
+                      placeholder="عدد القطع"
+                      style={{ maxWidth: "100px" }}
+                    />
+                    <span className="ms-3">
+                      الرصيد:
+                      <strong className="ms-2">
+                        {(parseInt(qty.rows) || 0) *
+                          (parseInt(qty.perRow) || 0)}
+                      </strong>
+                    </span>
+                  </div>
                 </Form.Group>
               </Col>
-
-              <Col md={6}>
-                <CustomDropDown
-                 
-                  label="وحدة الحجم"
-                  placeholder="اختر وحدة الحجم"
-                  value={variant.size_unit_id}
-                  onChange={(val) => handleVariantChange(index, "size_unit_id", val)}
-                />
-              </Col>
             </Row>
 
-            <Row className="mb-3">
-              <Col md={6}>
-                <Form.Group controlId={`location_${index}`}>
-                  <Form.Label>الموقع</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={variant.location}
-                    onChange={(e) => handleVariantChange(index, "location", e.target.value)}
-                    placeholder="أدخل الموقع"
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col md={6}>
-                <CustomDropDown
-                 
-                  label="المخزن"
-                  placeholder="اختر المخزن"
-                  value={variant.warehouse_id}
-                  onChange={(val) => handleVariantChange(index, "warehouse_id", val)}
-                />
-              </Col>
-            </Row>
-
-            <div className="text-end">
-              {variants.length > 1 && (
-                <Button variant="danger" size="sm" onClick={() => removeVariant(index)}>
-                  حذف المتغير
-                </Button>
-              )}
+            <div className="text-end mt-3">
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => removeQuantity(index)}
+              >
+                حذف الكمية
+              </Button>
             </div>
           </div>
         ))}
 
-        <Button variant="outline-primary" onClick={addVariant}>
+        <Button
+          variant="outline-primary"
+          className="mb-4"
+          onClick={addQuantity}
+        >
           ➕ إضافة كمية
+        </Button>
+
+        <h5 className="mb-3">المواقع</h5>
+        {(product.locations || []).map((loc, index) => (
+          <div key={index} className="mb-4 border rounded p-3 bg-light">
+            <Row className="mb-3">
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>الموقع</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={loc.location}
+                    onChange={(e) =>
+                      handleLocationChange(index, "location", e.target.value)
+                    }
+                    placeholder="أدخل الموقع"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <CustomDropDown
+                  options={warehouseOptions}
+                  value={
+                    warehouseOptions.find(
+                      (opt) => opt.value === loc.warehouse_id
+                    ) || null
+                  }
+                  onChange={(selected) =>
+                    handleLocationChange(
+                      index,
+                      "warehouse_id",
+                      selected?.value || null
+                    )
+                  }
+                  placeholder="اختر المخزن"
+                />
+              </Col>
+            </Row>
+            <div className="text-end">
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => removeLocation(index)}
+              >
+                حذف الموقع
+              </Button>
+            </div>
+          </div>
+        ))}
+
+        <Button variant="outline-primary" onClick={addLocation}>
+          ➕ إضافة موقع
         </Button>
       </Card.Body>
     </Card>
