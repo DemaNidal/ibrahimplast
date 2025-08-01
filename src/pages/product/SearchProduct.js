@@ -1,53 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/SearchProduct.css";
 import ProductCard from "../../components/Products/ProductCard";
 import CustomDropDown from "../../components/dropdown/CustomDropDown";
 import ProductFilters from "../../components/Filters/ProductFilters";
-//import TopSection from "../components/Filters/TopSection";
-
+import { fetchAllProducts } from "../../services/productService";
 
 const SearchProduct = () => {
+  const [products, setProducts] = useState([]);
   const rawOptions = ["أضيف حديثا", "الأقدم"];
 
   const dropdownOptions = rawOptions.map((text) => ({
     label: text,
-    value: text.replace(/\s/g, "-").toLowerCase(), // ex: "أضيف حديثا" → "أضيف-حديثا"
+    value: text.replace(/\s/g, "-").toLowerCase(),
   }));
 
-  // const [showImage, setShowImage] = useState(true);
-  // const [hideAnimation, setHideAnimation] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const formData = new FormData(); // إذا عندك فلترة حطها هون
+        const response = await fetchAllProducts(formData);
+        console.log(response.data);
+        setProducts(response.data); // تأكد من المسار حسب الباك
+      } catch (error) {
+        console.error("خطأ في جلب المنتجات", error);
+      }
+    };
 
-  // const handleClose = () => {
-  //   setHideAnimation(true);
-  //   setTimeout(() => {
-  //     setShowImage(false);
-  //   }, 300); // نفس مدة الأنيميشن
-  // };
+    fetchData();
+  }, []);
+
   return (
     <div className="search-page">
-    {/* {showImage && (
-        <TopSection onClose={handleClose} hideAnimation={hideAnimation} />
-      )} */}
       <div className="content">
         <ProductFilters />
-
         <div className="right-section" style={{ flex: 1 }}>
-          {/* ✅ top-bar خارج product-grid */}
           <div className="top-bar">
-            <div className="product-count">1001 منتج</div>
+            <div className="product-count">{products.length} منتج</div>
             <CustomDropDown options={dropdownOptions} />
           </div>
           <div className="product-grid">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            {products.map((product) => (
+              <ProductCard key={product.product_id} product={product} />
+            ))}
           </div>
         </div>
       </div>

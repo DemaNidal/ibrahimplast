@@ -8,3 +8,11 @@ export const createProduct = (formData) => {
     },
   });
 };
+
+export const fetchAllProducts  = (formData) => {
+  return api.get('/allproducts', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};

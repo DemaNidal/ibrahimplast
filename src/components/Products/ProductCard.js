@@ -5,36 +5,51 @@ import {
   MDBCardImage,
   MDBCardTitle,
 } from "mdb-react-ui-kit";
-import imgB from "../../assets/facom.png";
+import { useNavigate } from "react-router-dom";
+import { translateArabicColorToCss } from "../../hooks/translateColor";
 
-function ProductCard() {
-  const status = "غير متوفر"; // أو "متوفر"
+function ProductCard({ product }) {
+  const navigate = useNavigate();
+
+  const {
+    name,
+    image_url,
+    location,
+    size_value,
+    sizeUnit,
+    price,
+    currency,
+    category,
+    colors = [],
+    product_id,
+  } = product;
+
+  const status = "متوفر"; // لاحقاً يمكن ربطها بالحالة الحقيقية
 
   return (
     <MDBCard
       dir="rtl"
       className="text-black product-card h-100 shadow-sm rounded-4 overflow-hidden"
-      style={{
-        transition: "transform 0.2s",
-        cursor: "pointer",
-      }}
+      style={{ transition: "transform 0.2s", cursor: "pointer" }}
       onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
       onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+      onClick={() => navigate(`/product/${product_id}`)}
     >
-       {status === "غير متوفر" && (
-    <div
-      className="position-absolute top-0 start-0 bg-danger text-white px-3 py-1"
-      style={{
-        borderBottomRightRadius: "10px",
-        fontSize: "0.9rem",
-        fontWeight: "bold",
-      }}
-    >
-      غير متوفر
-    </div>
-  )}
+      {status === "غير متوفر" && (
+        <div
+          className="position-absolute top-0 start-0 bg-danger text-white px-3 py-1"
+          style={{
+            borderBottomRightRadius: "10px",
+            fontSize: "0.9rem",
+            fontWeight: "bold",
+          }}
+        >
+          غير متوفر
+        </div>
+      )}
+
       <MDBCardImage
-        src={imgB}
+        src={`${process.env.REACT_APP_API_URL}/uploads/${image_url}`}
         alt="صورة المنتج"
         position="top"
         style={{
@@ -53,36 +68,44 @@ function ProductCard() {
             className="fs-5 fw-bold mb-1 text-truncate"
             style={{ maxWidth: "100%" }}
           >
-            بخاخ زيت أبيض
+            {name}
           </MDBCardTitle>
-          <p className="text-muted small">الطابق الأول</p>
+          <p className="text-muted small">{location || "—"}</p>
         </div>
 
         <div className="mb-2">
-          {[
-            { label: "الحجم", value: "1 لتر" },
-            { label: "السعر", value: "$999" },
-            { label: "اللون", value: "الأحمر" },
-            { label: "الكمية", value: "13 × 152 كرتونة" },
+          {[ 
+            { label: "الحجم", value: `${size_value} ${sizeUnit}` },
+            { label: "السعر", value: `${price} ${currency}` },
+            { label: "الفئة", value: category },
           ].map((item, idx) => (
-            <div className="d-flex justify-content-between" key={idx}>
+            <div className="d-flex justify-content-between mb-1" key={idx}>
               <span className="text-muted">{item.label}</span>
               <span className="fw-semibold">{item.value}</span>
             </div>
           ))}
+
+          <div className="d-flex justify-content-between align-items-center mt-2">
+            <span className="text-muted">اللون</span>
+            <div className="d-flex gap-2">
+              {colors.map((colorName, index) => (
+                <div
+                  key={index}
+                  title={colorName}
+                  style={{
+                    width: "18px",
+                    height: "18px",
+                    borderRadius: "50%",
+                    backgroundColor: translateArabicColorToCss(colorName),
+                    border: "1px solid #ccc",
+                  }}
+                ></div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <hr className="my-3" />
-
-        <div className="d-flex justify-content-between align-items-center">
-          <span className="fw-semibold text-muted">الرصيد</span>
-          <span
-            style={{ color: "#C49A6C ", fontWeight: "600", fontSize: "1.1rem" }}
-          >
-            7,197.00  
-          </span>
-          
-        </div>
       </MDBCardBody>
     </MDBCard>
   );

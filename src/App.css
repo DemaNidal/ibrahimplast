@@ -2,7 +2,8 @@ body, html{
   background-color: #f6f6f6;
   margin: 0;
   padding: 0;
-
+  caret-color: transparent;
+  user-select: none;
 }
 
 html,* {

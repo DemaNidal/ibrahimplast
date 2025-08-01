@@ -21,22 +21,19 @@ const handleSave = async (e) => {
     const formData = new FormData();
 
     // نطبع القيم اللي راح نضيفها في formData (عدا الصورة)
-    Object.entries(product).forEach(([key, value]) => {
-      if (key === "imageFile" || value === null || value === "") return;
+Object.entries(product).forEach(([key, value]) => {
+  if (key === "imageFile" || value === null || value === "") return;
 
-      if (["color", "quantities", "locations"].includes(key)) {
-        console.log(key, JSON.stringify(value));
-        formData.append(key, JSON.stringify(value));
-      } else {
-        console.log(key, value);
-        formData.append(key, value);
-      }
-    });
+  if (["color", "quantities", "locations"].includes(key)) {
+    formData.append(key, JSON.stringify(value));
+  } else {
+    formData.append(key, value);
+  }
+});
 
-    if (product.imageFile) {
-      console.log("imageFile", product.imageFile.name);
-      formData.append("image", product.imageFile);
-    }
+if (product.imageFile) {
+  formData.append("image", product.imageFile);
+}
 
     // هنا تقدر تشوف كل القيم في formData عبر لفها:
     for (let pair of formData.entries()) {

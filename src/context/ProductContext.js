@@ -10,7 +10,8 @@ export const ProductProvider = ({ children }) => {
 const [product, setProduct] = useState({
   name: '',
   notes: '',
-  category: '',
+  categoryId: '',
+  categoryName: '', 
   color: [], // 👈 لازم يكون array للألوان المتعددة
   currency: '',
   madeFrom: '',
@@ -20,7 +21,7 @@ const [product, setProduct] = useState({
   price: '',
   size_value: '',
   sizeUnit: '',
-  image: null,
+  image_url: null,
   imageFile: null,
   quantities: [], // 👈 جديد
   locations: []   // 👈 جديد
