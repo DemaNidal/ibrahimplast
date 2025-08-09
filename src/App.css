@@ -6,6 +6,21 @@ body, html{
   user-select: none;
 }
 
+input,
+textarea,
+select,
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea {
+  caret-color: auto; /* Ensures the caret is visible */
+  user-select: text; /* Allows text selection */
+}
+
 html,* {
    font-family: "Cairo", sans-serif ; 
 }

@@ -33,7 +33,7 @@ function ProductCard({ product }) {
       style={{ transition: "transform 0.2s", cursor: "pointer" }}
       onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
       onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-      onClick={() => navigate(`/product/${product_id}`)}
+      onClick={() => navigate(`/productview/${product_id}`)} // ✅ هنا كانت المشكلة
     >
       {status === "غير متوفر" && (
         <div
@@ -74,7 +74,7 @@ function ProductCard({ product }) {
         </div>
 
         <div className="mb-2">
-          {[ 
+          {[
             { label: "الحجم", value: `${size_value} ${sizeUnit}` },
             { label: "السعر", value: `${price} ${currency}` },
             { label: "الفئة", value: category },
@@ -88,15 +88,15 @@ function ProductCard({ product }) {
           <div className="d-flex justify-content-between align-items-center mt-2">
             <span className="text-muted">اللون</span>
             <div className="d-flex gap-2">
-              {colors.map((colorName, index) => (
+              {colors.map((color, index) => (
                 <div
                   key={index}
-                  title={colorName}
+                  title={color.colorName}
                   style={{
                     width: "18px",
                     height: "18px",
                     borderRadius: "50%",
-                    backgroundColor: translateArabicColorToCss(colorName),
+                    backgroundColor: translateArabicColorToCss(color.colorName),
                     border: "1px solid #ccc",
                   }}
                 ></div>

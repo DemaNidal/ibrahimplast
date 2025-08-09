@@ -14,7 +14,7 @@ function AppRouter() {
         <Route index element={<Dashboard />} />
         <Route path="addproduct" element={<AddProduct />} />
         <Route path="search" element={<SearchProduct />} />
-        <Route path="productview" element={<ProductView />} />
+        <Route path="productview/:id" element={<ProductView />} />
         {/* أضف صفحات أخرى هنا */}
       </Route>
 

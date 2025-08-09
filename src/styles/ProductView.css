@@ -35,7 +35,7 @@ body {
   color: #0c0c0c; /* light text for contrast */
 
   height: auto; /* خلي المحتوى يحدد الطول */
-  max-width: 500px;
+  max-width: 700px;
   min-width: 300px;
 box-shadow: 9px 9px 9px rgba(111, 111, 111, 0.5);
 
@@ -53,9 +53,10 @@ box-shadow: 9px 9px 9px rgba(111, 111, 111, 0.5);
   color: #b88c00;
 }
 .product-category {
-  font-size: 14px;
-  color: #666;
+  font-size: 15px;
+  color: #525252;
   display: block;
+  font-weight: bold;
   margin-bottom: 5px;
 }
 
@@ -75,17 +76,21 @@ box-shadow: 9px 9px 9px rgba(111, 111, 111, 0.5);
   margin-bottom: 10px;
   font-size: 15px;
 }
-.location-box {
+
+.location-list {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 10px;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 8px;
+}
+
+.location-badge {
+  background-color: #f0f0f0;
+  color: #333;
+  border-radius: 12px;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
 }
 
 /* زر الشراء */
@@ -139,4 +144,30 @@ box-shadow: 9px 9px 9px rgba(111, 111, 111, 0.5);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   width: fit-content;
+}
+.quantity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 5px;
+  padding-right: 10px;
+}
+.quantity-item {
+  background-color: #f8f8f8;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: inline-block;
+  max-width: fit-content;
+}
+.color-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+.color-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }

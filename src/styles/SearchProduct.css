@@ -167,3 +167,25 @@ h2 {
 
 
 
+.search-header {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between text and icon */
+}
+
+.search-header strong {
+  font-size: 1.5rem; /* Increase size if needed */
+    margin-bottom: 32px;
+
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 2rem; /* Match text size */
+  cursor: pointer;
+  line-height: 1;
+  padding: 5px;
+  margin-bottom: 32px;
+  margin-right: 50px;
+}

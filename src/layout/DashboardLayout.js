@@ -1,14 +1,15 @@
-
-import React from 'react';
-import Header from '../components/Header'; // Adjust the path if needed
+import React, { useState } from 'react';
+import Header from '../components/Header';
 import { Outlet } from 'react-router-dom';
 
 const DashboardLayout = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+
   return (
     <>
-      <Header />
+      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <main>
-        <Outlet /> {/* This will render the page content */}
+        <Outlet context={{ searchTerm, setSearchTerm }} /> {/* Pass to children */}
       </main>
     </>
   );

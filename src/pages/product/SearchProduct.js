@@ -3,34 +3,68 @@ import "../../styles/SearchProduct.css";
 import ProductCard from "../../components/Products/ProductCard";
 import CustomDropDown from "../../components/dropdown/CustomDropDown";
 import ProductFilters from "../../components/Filters/ProductFilters";
-import { fetchAllProducts } from "../../services/productService";
+import { fetchAllProducts, fetchProductByTerm } from "../../services/productService";
+import { useNavigate, useLocation, useOutletContext } from "react-router-dom";
 
 const SearchProduct = () => {
   const [products, setProducts] = useState([]);
+  const { searchTerm, setSearchTerm } = useOutletContext();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   const rawOptions = ["أضيف حديثا", "الأقدم"];
-
   const dropdownOptions = rawOptions.map((text) => ({
     label: text,
     value: text.replace(/\s/g, "-").toLowerCase(),
   }));
 
+  const params = new URLSearchParams(location.search);
+  const termFromURL = params.get('term') || '';
+
   useEffect(() => {
+    setSearchTerm(termFromURL);
+
     const fetchData = async () => {
       try {
-        const formData = new FormData(); // إذا عندك فلترة حطها هون
-        const response = await fetchAllProducts(formData);
-        console.log(response.data);
-        setProducts(response.data); // تأكد من المسار حسب الباك
+        if (termFromURL.trim()) {
+          const response = await fetchProductByTerm(termFromURL);
+          setProducts(response.data);
+        } else {
+          const response = await fetchAllProducts();
+          setProducts(response.data);
+        }
       } catch (error) {
         console.error("خطأ في جلب المنتجات", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [termFromURL, setSearchTerm]);
+
+  const handleClose = () => {
+    setSearchTerm('');
+    navigate('/search', {
+      replace: true,
+      state: { clearSearch: true }
+    });
+  };
 
   return (
     <div className="search-page">
+      {searchTerm && (
+        <div className="search-header">
+          <button
+            type="button"
+            aria-label="Close"
+            className="close-btn"
+            onClick={handleClose}
+          >
+            &times;
+          </button>
+          <strong>نتائج البحث عن "{searchTerm}"</strong>
+        </div>
+      )}
+
       <div className="content">
         <ProductFilters />
         <div className="right-section" style={{ flex: 1 }}>
@@ -45,20 +79,9 @@ const SearchProduct = () => {
           </div>
         </div>
       </div>
-
-      <div className="pagination">
-        <button>{"<"}</button>
-        <button>1</button>
-        <button>2</button>
-        <button className="active">3</button>
-        <button>4</button>
-        <button>5</button>
-        <span>...</span>
-        <button>11</button>
-        <button>{">"}</button>
-      </div>
     </div>
   );
 };
 
 export default SearchProduct;
+ 

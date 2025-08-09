@@ -16,3 +16,13 @@ export const fetchAllProducts  = (formData) => {
     },
   });
 };
+
+export const fetchProductById = (productId) => {
+  return api.get(`/products/${productId}`);
+};
+
+export const fetchProductByTerm = (term) => {
+  return api.get(`/search`, {
+    params: { term },
+  });
+};

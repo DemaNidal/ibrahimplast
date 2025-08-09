@@ -8,6 +8,7 @@ const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
 const [product, setProduct] = useState({
+  
   name: '',
   notes: '',
   categoryId: '',
