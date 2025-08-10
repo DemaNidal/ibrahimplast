@@ -11,9 +11,9 @@ const ProductView = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-   const imageBaseUrl = "http://localhost:5000/uploads/";
+  const imageBaseUrl = "http://localhost:5000/uploads/";
 
-  console.log("Product ID:",  id ); // لتتأكد أنه ليس undefined
+  console.log("Product ID:", id); // لتتأكد أنه ليس undefined
   useEffect(() => {
     const loadProduct = async () => {
       try {
@@ -35,13 +35,13 @@ const ProductView = () => {
   const barcodeValue = product.product_id.toString().padStart(8, "0");
 
   const handlePrintBarcode = () => {
-  const printWindow = window.open("", "PRINT", "height=1000,width=1000");
+    const printWindow = window.open("", "PRINT", "height=1000,width=1000");
 
-  const locationText = product.locations
-    ?.map((loc) => `${loc.location} - ${loc.warehouse_name}`)
-    .join(", ");
+    const locationText = product.locations
+      ?.map((loc) => `${loc.location} - ${loc.warehouse_name}`)
+      .join(", ");
 
- const htmlContent = `
+    const htmlContent = `
 <html>
   <head>
     <title>Barcode</title>
@@ -95,36 +95,36 @@ const ProductView = () => {
 </html>
 `;
 
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+    printWindow.focus();
 
-  printWindow.document.write(htmlContent);
-  printWindow.document.close();
-  printWindow.focus();
-
-  printWindow.onload = () => {
-    const script = printWindow.document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js";
-    script.onload = () => {
-      printWindow.JsBarcode("#barcode", barcodeValue, {
-        format: "CODE128",
-        width: 2,
-        height: 60,
-        displayValue: false,
-        margin: 0,
-      });
-      printWindow.print();
-      printWindow.close();
+    printWindow.onload = () => {
+      const script = printWindow.document.createElement("script");
+      script.src =
+        "https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js";
+      script.onload = () => {
+        printWindow.JsBarcode("#barcode", barcodeValue, {
+          format: "CODE128",
+          width: 2,
+          height: 60,
+          displayValue: false,
+          margin: 0,
+        });
+        printWindow.print();
+        printWindow.close();
+      };
+      printWindow.document.body.appendChild(script);
     };
-    printWindow.document.body.appendChild(script);
   };
-};
-
 
   return (
     <div className="product-page">
       <div className="product-content">
         <div className="product-info">
           <small className="product-category">
-            <strong>{product.category_name}</strong> | {product.size_value} {product.size_unit_name}
+            <strong>{product.category_name}</strong> | {product.size_value}{" "}
+            {product.size_unit_name}
           </small>
           <h2>{product.product_name}</h2>
           <p>{product.notes}</p>
@@ -145,7 +145,14 @@ const ProductView = () => {
             </li>
 
             <li>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "5px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "10px",
+                  marginTop: "5px",
+                }}
+              >
                 {product.quantities?.map((q, index) => (
                   <span
                     key={index}
@@ -156,7 +163,8 @@ const ProductView = () => {
                       border: "1px solid #ccc",
                     }}
                   >
-                    {q.quantity_rows} × {q.quantity_per_row} = {q.total} {q.unit}
+                    {q.quantity_rows} × {q.quantity_per_row} = {q.total}{" "}
+                    {q.unit}
                   </span>
                 ))}
               </div>
@@ -172,7 +180,9 @@ const ProductView = () => {
                   <div key={index} className="color-item">
                     <span
                       style={{
-                        backgroundColor: translateArabicColorToCss(color.color_name),
+                        backgroundColor: translateArabicColorToCss(
+                          color.color_name
+                        ),
                         width: "20px",
                         height: "20px",
                         borderRadius: "50%",
@@ -188,14 +198,30 @@ const ProductView = () => {
             </li>
           </ul>
 
-          <div className="barcode" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Barcode value={barcodeValue} height={50} width={1.5} displayValue={false} />
-            <FaPrint title="Print Barcode" style={{ cursor: "pointer", fontSize: "18px" }} onClick={handlePrintBarcode} />
+          <div
+            className="barcode"
+            style={{ display: "flex", alignItems: "center", gap: "10px" }}
+          >
+            <Barcode
+              value={barcodeValue}
+              height={50}
+              width={1.5}
+              displayValue={false}
+            />
+            <FaPrint
+              title="Print Barcode"
+              style={{ cursor: "pointer", fontSize: "18px" }}
+              onClick={handlePrintBarcode}
+            />
           </div>
         </div>
 
         <div className="product-image-container">
-          <img src={`${imageBaseUrl}${product.image_url}`} alt="المنتج" className="product-image" />
+          <img
+            src={`${imageBaseUrl}${product.image_url}`}
+            alt="المنتج"
+            className="product-image"
+          />
           <div className="product-shadow"></div>
         </div>
       </div>
