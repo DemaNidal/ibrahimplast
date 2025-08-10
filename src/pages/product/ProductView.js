@@ -11,7 +11,7 @@ const ProductView = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  //  const imageBaseUrl = "http://localhost:5000/uploads/";
+   const imageBaseUrl = "http://localhost:5000/uploads/";
 
   console.log("Product ID:",  id ); // لتتأكد أنه ليس undefined
   useEffect(() => {
@@ -41,57 +41,60 @@ const ProductView = () => {
     ?.map((loc) => `${loc.location} - ${loc.warehouse_name}`)
     .join(", ");
 
-  const htmlContent = `
-    <html>
-      <head>
-        <title>Barcode</title>
-        <style>
-          @media print {
-    @page {
-      size: 80mm 50mm;
-      margin: 3mm;
-    }
-    body {
-      margin: 0;
-      padding: 0;
-    }
-  }
+ const htmlContent = `
+<html>
+  <head>
+    <title>Barcode</title>
+    <style>
+      @media print {
+        @page {
+          size: 80mm 50mm;
+          margin: 3mm;
+        }
+        body {
+          margin: 0;
+          padding: 0;
+        }
+      }
 
-          body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            padding: 0px;
-          }
-          .product-name {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 8px;
-          }
-          #barcode {
-            margin: 0 auto;
-            display: block;
-          }
-          .barcode-value {
-            font-size: 16px;
-            letter-spacing: 6px;
-            margin-top: 4px;
-            margin-bottom: 6px;
-          }
-          .product-location {
-            font-size: 13px;
-            color: #333;
-            margin-top: 4px;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="product-name">${product.product_name}</div>
-        <svg id="barcode"></svg>
-        <div class="barcode-value">${barcodeValue}</div>
-        <div class="product-location">${locationText}</div>
-      </body>
-    </html>
-  `;
+      body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+        padding: 0px;
+      }
+      .product-name {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+      #barcode {
+        margin: 0 auto;
+        display: block;
+      }
+      .product-location {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000; /* Full black for clarity */
+        margin-top: 6px;
+        margin-bottom: 4px;
+      }
+      .barcode-value {
+        font-size: 16px;
+        letter-spacing: 6px;
+        margin-top: 4px;
+        margin-bottom: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="product-name">${product.product_name}</div>
+    <svg id="barcode"></svg>
+    <div class="product-location">${locationText || ""}</div>
+    <div class="barcode-value">${barcodeValue}</div>
+  </body>
+</html>
+`;
+
 
   printWindow.document.write(htmlContent);
   printWindow.document.close();
@@ -191,10 +194,10 @@ const ProductView = () => {
           </div>
         </div>
 
-        {/* <div className="product-image-container">
+        <div className="product-image-container">
           <img src={`${imageBaseUrl}${product.image_url}`} alt="المنتج" className="product-image" />
           <div className="product-shadow"></div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
