@@ -7,8 +7,9 @@ import {
   fetchSizeUnits,
   fetchwarehouse,
 } from "../../services/lookupService";
+import { fetchProductByBarcode } from "../../services/productService";
 
-function ProductFilters() {
+function ProductFilters({setProducts }) {
   const categories = useLookupData(
     fetchCategories,
     "category_id",
@@ -34,6 +35,22 @@ function ProductFilters() {
     sizeUnit: "",
     barcode: "",
   });
+
+const handleBarcodeSearch = async (barcode) => {
+  if (!barcode.trim()) {
+    alert("أدخل الباركود أولاً");
+    return;
+  }
+  try {
+    const res = await fetchProductByBarcode(barcode);
+    // Ensure products state is always an array
+    const data = Array.isArray(res.data) ? res.data : [res.data];
+    setProducts(data);
+  } catch (err) {
+    console.error("Error searching by barcode:", err);
+  }
+};
+
 
   const handleCategoryChange = (value) => {
     setFilters((prev) => {
@@ -65,6 +82,8 @@ function ProductFilters() {
       barcode: "",
     });
   };
+
+
 
   return (
     <div className="filters" dir="rtl">
@@ -205,15 +224,32 @@ function ProductFilters() {
       </div>
 
       {/* ✅ الباركود */}
-      <div className="filter-group">
-        <h4>الباركود</h4>
-        <input
-          placeholder="الباركود"
-          className="size-input"
-          value={filters.barcode}
-          onChange={(e) => handleInputChange("barcode", e.target.value)}
-        />
-      </div>
+      {/* ✅ الباركود */}
+<div className="filter-group">
+  <h4>الباركود</h4>
+  <div style={{ display: "flex", gap: "8px" }}>
+    <input
+      placeholder="الباركود"
+      className="size-input"
+      value={filters.barcode}
+      onChange={(e) => handleInputChange("barcode", e.target.value)}
+    />
+    <button
+      onClick={() => handleBarcodeSearch(filters.barcode)}
+      style={{
+        padding: "4px 8px",
+        background: "#C49A6C",
+        color: "#fff",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+      }}
+    >
+      بحث
+    </button>
+  </div>
+</div>
+
     </div>
   );
 }

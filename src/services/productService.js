@@ -26,3 +26,9 @@ export const fetchProductByTerm = (term) => {
     params: { term },
   });
 };
+
+export const fetchProductByBarcode =(barcode) => {
+  return api.get(`/search/barcode`, {
+    params: {barcode},
+  });
+};

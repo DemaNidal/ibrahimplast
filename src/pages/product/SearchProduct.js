@@ -66,7 +66,7 @@ const SearchProduct = () => {
       )}
 
       <div className="content">
-        <ProductFilters />
+        <ProductFilters  setProducts={setProducts} />
         <div className="right-section" style={{ flex: 1 }}>
           <div className="top-bar">
             <div className="product-count">{products.length} منتج</div>

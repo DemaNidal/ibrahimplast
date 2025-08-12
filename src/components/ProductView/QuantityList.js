@@ -1,7 +1,7 @@
 // src/components/ProductView/QuantityList.jsx
 import React from "react";
 
-const QuantityList = ({ quantities }) => (
+const QuantityList = ({ quantities,Unit }) => (
   <div
     style={{
       display: "flex",
@@ -20,7 +20,7 @@ const QuantityList = ({ quantities }) => (
           border: "1px solid #ccc",
         }}
       >
-        {q.quantity_rows} × {q.quantity_per_row} = {q.total} {q.unit}
+        {q.quantity_rows} × {q.quantity_per_row} = {q.total} {Unit}
       </span>
     ))}
   </div>

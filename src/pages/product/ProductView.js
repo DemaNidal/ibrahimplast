@@ -57,7 +57,7 @@ const ProductView = () => {
               <strong>المادة:</strong> {product.made_from_name}
             </li>
             <li>
-              <QuantityList quantities={product.quantities} />
+              <QuantityList quantities={product.quantities} Unit={product.quantity_unit} />
             </li>
             <li>
               <strong>السعر:</strong> ${product.price}
