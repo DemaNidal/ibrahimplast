@@ -40,6 +40,13 @@
   padding: 0;
 }
 
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two per row */
+  gap: 8px 12px; /* vertical and horizontal gaps */
+}
+
+
 .filter-group h4 {
   font-size: 16px;
   font-weight: 600;

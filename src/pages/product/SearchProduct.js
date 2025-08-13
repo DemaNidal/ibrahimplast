@@ -4,13 +4,12 @@ import ProductCard from "../../components/Products/ProductCard";
 import CustomDropDown from "../../components/dropdown/CustomDropDown";
 import ProductFilters from "../../components/Filters/ProductFilters";
 import { fetchAllProducts, fetchProductByTerm } from "../../services/productService";
-import { useNavigate, useLocation, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 const SearchProduct = () => {
   const [products, setProducts] = useState([]);
   const { searchTerm, setSearchTerm } = useOutletContext();
   const navigate = useNavigate();
-  const location = useLocation();
   
   const rawOptions = ["أضيف حديثا", "الأقدم"];
   const dropdownOptions = rawOptions.map((text) => ({
@@ -18,29 +17,25 @@ const SearchProduct = () => {
     value: text.replace(/\s/g, "-").toLowerCase(),
   }));
 
-  const params = new URLSearchParams(location.search);
-  const termFromURL = params.get('term') || '';
 
-  useEffect(() => {
-    setSearchTerm(termFromURL);
 
-    const fetchData = async () => {
-      try {
-        if (termFromURL.trim()) {
-          const response = await fetchProductByTerm(termFromURL);
-          setProducts(response.data);
-        } else {
-          const response = await fetchAllProducts();
-          setProducts(response.data);
-        }
-      } catch (error) {
-        console.error("خطأ في جلب المنتجات", error);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      if (searchTerm.trim()) {
+        const response = await fetchProductByTerm(searchTerm);
+        setProducts(response.data);
+      } else {
+        const response = await fetchAllProducts();
+        setProducts(response.data);
       }
-    };
+    } catch (error) {
+      console.error("خطأ في جلب المنتجات", error);
+    }
+  };
 
-    fetchData();
-  }, [termFromURL, setSearchTerm]);
-
+  fetchData();
+}, [searchTerm]);
   const handleClose = () => {
     setSearchTerm('');
     navigate('/search', {
