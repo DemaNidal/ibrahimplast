@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/SearchProduct.css";
 import ProductCard from "../../components/Products/ProductCard";
-import CustomDropDown from "../../components/dropdown/CustomDropDown";
 import ProductFilters from "../../components/Filters/ProductFilters";
 import { fetchAllProducts, fetchProductByTerm } from "../../services/productService";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -11,11 +10,11 @@ const SearchProduct = () => {
   const { searchTerm, setSearchTerm } = useOutletContext();
   const navigate = useNavigate();
   
-  const rawOptions = ["أضيف حديثا", "الأقدم"];
-  const dropdownOptions = rawOptions.map((text) => ({
-    label: text,
-    value: text.replace(/\s/g, "-").toLowerCase(),
-  }));
+  // const rawOptions = ["أضيف حديثا", "الأقدم"];
+  // const dropdownOptions = rawOptions.map((text) => ({
+  //   label: text,
+  //   value: text.replace(/\s/g, "-").toLowerCase(),
+  // }));
  
 
 useEffect(() => {
@@ -64,7 +63,7 @@ useEffect(() => {
         <div className="right-section" style={{ flex: 1 }}>
           <div className="top-bar">
             <div className="product-count">{products.length} منتج</div>
-            <CustomDropDown options={dropdownOptions} />
+            {/* <CustomDropDown options={dropdownOptions} /> */}
           </div>
           <div className="product-grid">
             {products.map((product) => (

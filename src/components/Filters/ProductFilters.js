@@ -13,7 +13,7 @@ import { fetchProductByBarcode } from "../../services/productService";
 import { useOutletContext } from "react-router-dom";
 
 function ProductFilters({ setProducts }) {
-  const { setSearchTerm } = useOutletContext();
+  const { searchTerm, setSearchTerm } = useOutletContext();
 
 
   // inside your component
@@ -22,8 +22,9 @@ const handleFilterChange = async (updatedFilters) => {
     let query = "";
 
     // Barcode / term
-    if (updatedFilters.barcode) {
-      query += `term=${updatedFilters.barcode}&`;
+    if (searchTerm) {
+      console.log(searchTerm);
+      query += `term=${searchTerm}&`;
     }
 
     // Usage
@@ -34,14 +35,19 @@ const handleFilterChange = async (updatedFilters) => {
 
     // Category (use first one for now)
     if (updatedFilters.selectedCategories.length > 0) {
-      const catLabel = categories.find((c) => c.value === updatedFilters.selectedCategories[0])?.label;
-      if (catLabel) query += `category=${catLabel}&`;
-    }
+  const selectedLabels = updatedFilters.selectedCategories
+    .map((catVal) => categories.find((c) => c.value === catVal)?.label)
+    .filter(Boolean)
+    .join(",");
+  
+  query += `category=${encodeURIComponent(selectedLabels)}&`;
+}
+
 
     // Made from
     if (updatedFilters.selectedMadeFrom) {
       const madeFromLabel = madeFrom.find((m) => m.value === updatedFilters.selectedMadeFrom)?.label;
-      if (madeFromLabel) query += `made_from_name=${madeFromLabel}&`;
+      if (madeFromLabel) query += `made_from=${madeFromLabel}&`;
     }
 
     // Warehouse
@@ -138,8 +144,13 @@ const handleCategoryChange = (value) => {
 };
 
   const handleRadioChange = (key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-  };
+  setFilters((prev) => {
+    const newFilters = { ...prev, [key]: value };
+    console.log("new", JSON.stringify(newFilters));
+    handleFilterChange(newFilters);
+    return newFilters;
+  });
+};
 
   const handleInputChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
