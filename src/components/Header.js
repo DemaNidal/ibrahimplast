@@ -4,6 +4,7 @@ import '../styles/header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IoCameraOutline } from "react-icons/io5";
 import { faBarsStaggered, faUser, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import SidebarMenu,{SidebarItem} from './dropdown/DropDownMenuHeader';
 
 const Header = ({ searchTerm, setSearchTerm }) => {
   const fileInputRef = useRef(null);
@@ -72,7 +73,14 @@ const Header = ({ searchTerm, setSearchTerm }) => {
       </div>
 
       <div className="header-right">
-        <FontAwesomeIcon icon={faBarsStaggered} />
+        <SidebarMenu trigger={<FontAwesomeIcon icon={faBarsStaggered} />}>
+  <SidebarItem onClick={() => navigate('/profile')}>
+    <FontAwesomeIcon icon={faUser} /> Profile
+  </SidebarItem>
+  <SidebarItem onClick={() => console.log("Logout")}>
+    <FontAwesomeIcon icon={faUser} /> Logout
+  </SidebarItem>
+</SidebarMenu>
         <FontAwesomeIcon className="icon profile-icon" icon={faUser} />
       </div>
     </div>

@@ -1,5 +1,5 @@
 // import React from 'react';
-// import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
+// import { Sidebar, Menu, MenuItem, useProSidebar, SubMenu } from 'react-pro-sidebar';
 // import '../../styles/SidebarMenu.css';
 // import { Link } from 'react-router-dom';
 // import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
@@ -7,14 +7,14 @@
 // import ReceiptRoundedIcon from "@mui/icons-material/ReceiptRounded";
 // import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
 
-// // import WalletRoundedIcon from "@mui/icons-material/WalletRounded";
-// // import AccountBalanceRoundedIcon from "@mui/icons-material/AccountBalanceRounded";
-// // import SavingsRoundedIcon from "@mui/icons-material/SavingsRounded";
-// // import MonetizationOnRoundedIcon from "@mui/icons-material/MonetizationOnRounded";
-// // import SettingsApplicationsRoundedIcon from "@mui/icons-material/SettingsApplicationsRounded";
-// // import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-// // import ShieldRoundedIcon from "@mui/icons-material/ShieldRounded";
-// // import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
+// import WalletRoundedIcon from "@mui/icons-material/WalletRounded";
+// import AccountBalanceRoundedIcon from "@mui/icons-material/AccountBalanceRounded";
+// import SavingsRoundedIcon from "@mui/icons-material/SavingsRounded";
+// import MonetizationOnRoundedIcon from "@mui/icons-material/MonetizationOnRounded";
+// import SettingsApplicationsRoundedIcon from "@mui/icons-material/SettingsApplicationsRounded";
+// import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+// import ShieldRoundedIcon from "@mui/icons-material/ShieldRounded";
+// import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 // import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 
@@ -39,7 +39,7 @@
 // >
 //   Charts
 // </MenuItem>      
-//    {/* <SubMenu label="Wallets" icon={<WalletRoundedIcon />}>
+//    <SubMenu label="Wallets" icon={<WalletRoundedIcon />}>
 //             <MenuItem icon={<AccountBalanceRoundedIcon />}>
 //               Current Wallet
 //             </MenuItem>
@@ -52,8 +52,8 @@
 //             <MenuItem icon={<NotificationsRoundedIcon />}>
 //               Notifications
 //             </MenuItem>
-//           </SubMenu>*/
-//           <MenuItem icon={<LogoutRoundedIcon />} component={<Link to="/login" />}> Logout </MenuItem> }
+//           </SubMenu>
+//           <MenuItem icon={<LogoutRoundedIcon />} component={<Link to="/login" />}> Logout </MenuItem> 
 //         </Menu>
 //       </Sidebar>
 //     </div>

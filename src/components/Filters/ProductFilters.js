@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../../styles/ProductFilters.css";
 import { useLookupData } from "../../hooks/useLookupData";
+import api from "../../config/api";
 import {
   fetchCategories,
   fetchMadeFrom,
@@ -13,6 +14,69 @@ import { useOutletContext } from "react-router-dom";
 
 function ProductFilters({ setProducts }) {
   const { setSearchTerm } = useOutletContext();
+
+
+  // inside your component
+const handleFilterChange = async (updatedFilters) => {
+  try {
+    let query = "";
+
+    // Barcode / term
+    if (updatedFilters.barcode) {
+      query += `term=${updatedFilters.barcode}&`;
+    }
+
+    // Usage
+    if (updatedFilters.selectedUsage) {
+      const usageLabel = usages.find((u) => u.value === updatedFilters.selectedUsage)?.label;
+      if (usageLabel) query += `usage_name=${usageLabel}&`;
+    }
+
+    // Category (use first one for now)
+    if (updatedFilters.selectedCategories.length > 0) {
+      const catLabel = categories.find((c) => c.value === updatedFilters.selectedCategories[0])?.label;
+      if (catLabel) query += `category=${catLabel}&`;
+    }
+
+    // Made from
+    if (updatedFilters.selectedMadeFrom) {
+      const madeFromLabel = madeFrom.find((m) => m.value === updatedFilters.selectedMadeFrom)?.label;
+      if (madeFromLabel) query += `made_from_name=${madeFromLabel}&`;
+    }
+
+    // Warehouse
+    if (updatedFilters.selectedWarehouse) {
+      const warehouseLabel = warehouses.find((w) => w.value === updatedFilters.selectedWarehouse)?.label;
+      if (warehouseLabel) query += `warehouse_name=${warehouseLabel}&`;
+    }
+
+    // Size
+    if (updatedFilters.size) {
+      query += `size_value=${updatedFilters.size}&`;
+    }
+
+    // Size unit
+    if (updatedFilters.sizeUnit) {
+      const sizeUnitLabel = sizeUnits.find((s) => s.value === updatedFilters.sizeUnit)?.label;
+      if (sizeUnitLabel) query += `size_unit_name=${sizeUnitLabel}&`;
+    }
+
+    // Remove trailing &
+    if (query.endsWith("&")) query = query.slice(0, -1);
+
+    // Skip API if empty
+    if (!query) return;
+
+    console.log("query:", query);
+
+    const response = await api.get(`/search?${query}`);
+    const data = Array.isArray(response.data) ? response.data : [response.data];
+    setProducts(data);
+  } catch (err) {
+    console.error("Error fetching filtered products:", err);
+  }
+};
+
 
   const categories = useLookupData(
     fetchCategories,
@@ -58,17 +122,20 @@ function ProductFilters({ setProducts }) {
     }
   };
 
-  const handleCategoryChange = (value) => {
-    setFilters((prev) => {
-      const alreadySelected = prev.selectedCategories.includes(value);
-      return {
-        ...prev,
-        selectedCategories: alreadySelected
-          ? prev.selectedCategories.filter((v) => v !== value)
-          : [...prev.selectedCategories, value],
-      };
-    });
-  };
+const handleCategoryChange = (value) => {
+  setFilters((prev) => {
+    const alreadySelected = prev.selectedCategories.includes(value);
+    const newFilters = {
+      ...prev,
+      selectedCategories: alreadySelected
+        ? prev.selectedCategories.filter((v) => v !== value)
+        : [...prev.selectedCategories, value],
+    };
+    console.log("new" + JSON.stringify(newFilters)); 
+    handleFilterChange(newFilters);
+    return newFilters;
+  });
+};
 
   const handleRadioChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -210,8 +277,8 @@ function ProductFilters({ setProducts }) {
                 className="form-check-input"
                 name="usages"
                 value={us.value}
-                checked={filters.selectedWarehouse === us.value}
-                onChange={() => handleRadioChange("selectedWarehouse", us.value)}
+                checked={filters.selectedUsage === us.value}
+onChange={() => handleRadioChange("selectedUsage", us.value)}
               />
               <label className="form-check-label" htmlFor={id}>
                 {us.label}

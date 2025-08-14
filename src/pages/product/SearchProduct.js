@@ -16,8 +16,7 @@ const SearchProduct = () => {
     label: text,
     value: text.replace(/\s/g, "-").toLowerCase(),
   }));
-
-
+ 
 
 useEffect(() => {
   const fetchData = async () => {
