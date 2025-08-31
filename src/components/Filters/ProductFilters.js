@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import "../../styles/ProductFilters.css";
 import { useLookupData } from "../../hooks/useLookupData";
-import api from "../../config/api";
 import {
   fetchCategories,
   fetchMadeFrom,
@@ -9,82 +8,18 @@ import {
   fetchwarehouse,
   fetchUsages,
 } from "../../services/lookupService";
-import { fetchProductByBarcode } from "../../services/productService";
+import { fetchProductByBarcode, searchProducts } from "../../services/productService";
 import { useOutletContext } from "react-router-dom";
+import CategoryFilter from "./CategoryFilter";
+import SizeFilter from "./SizeFilter";
+import UsageFilter from "./UsageFilter";
+import MadeFromFilter from "./MadeFromFilter";
+import WarehouseFilter from "./WarehouseFilter";
+import BarcodeFilter from "./BarcodeFilter";
 
 function ProductFilters({ setProducts }) {
   const { searchTerm, setSearchTerm } = useOutletContext();
-
-
-  // inside your component
-const handleFilterChange = async (updatedFilters) => {
-  try {
-    let query = "";
-
-    // Barcode / term
-    if (searchTerm) {
-      console.log(searchTerm);
-      query += `term=${searchTerm}&`;
-    }
-
-    // Usage
-    if (updatedFilters.selectedUsage) {
-      const usageLabel = usages.find((u) => u.value === updatedFilters.selectedUsage)?.label;
-      if (usageLabel) query += `usage_name=${usageLabel}&`;
-    }
-
-    // Category (use first one for now)
-    if (updatedFilters.selectedCategories.length > 0) {
-  const selectedLabels = updatedFilters.selectedCategories
-    .map((catVal) => categories.find((c) => c.value === catVal)?.label)
-    .filter(Boolean)
-    .join(",");
-  
-  query += `category=${encodeURIComponent(selectedLabels)}&`;
-}
-
-
-    // Made from
-    if (updatedFilters.selectedMadeFrom) {
-      const madeFromLabel = madeFrom.find((m) => m.value === updatedFilters.selectedMadeFrom)?.label;
-      if (madeFromLabel) query += `made_from=${madeFromLabel}&`;
-    }
-
-    // Warehouse
-    if (updatedFilters.selectedWarehouse) {
-      const warehouseLabel = warehouses.find((w) => w.value === updatedFilters.selectedWarehouse)?.label;
-      if (warehouseLabel) query += `warehouse_name=${warehouseLabel}&`;
-    }
-
-    // Size
-    if (updatedFilters.size) {
-      query += `size_value=${updatedFilters.size}&`;
-    }
-
-    // Size unit
-    if (updatedFilters.sizeUnit) {
-      const sizeUnitLabel = sizeUnits.find((s) => s.value === updatedFilters.sizeUnit)?.label;
-      if (sizeUnitLabel) query += `size_unit_name=${sizeUnitLabel}&`;
-    }
-
-    // Remove trailing &
-    if (query.endsWith("&")) query = query.slice(0, -1);
-
-    // Skip API if empty
-    if (!query) return;
-
-    console.log("query:", query);
-
-    const response = await api.get(`/search?${query}`);
-    const data = Array.isArray(response.data) ? response.data : [response.data];
-    setProducts(data);
-  } catch (err) {
-    console.error("Error fetching filtered products:", err);
-  }
-};
-
-
-  const categories = useLookupData(
+    const categories = useLookupData(
     fetchCategories,
     "category_id",
     "category_name"
@@ -110,19 +45,39 @@ const handleFilterChange = async (updatedFilters) => {
     selectedUsage: "",
     size: "",
     sizeUnit: "",
-    barcode: "",
   });
+  const [barcodeInput, setBarcodeInput] = useState("");
 
-  const handleBarcodeSearch = async (barcode) => {
-    if (!barcode.trim()) {
+
+  // inside your component
+ const handleFilterChange = async (updatedFilters) => {
+    try {
+      const data = await searchProducts(updatedFilters, searchTerm, {
+        categories, madeFrom, warehouses, sizeUnits, usages
+      });
+      setProducts(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+
+
+
+
+  const handleBarcodeSearch = async () => {
+    if (!barcodeInput.trim()) {
       alert("أدخل الباركود أولاً");
       return;
     }
     try {
-      const res = await fetchProductByBarcode(barcode);
-      // Ensure products state is always an array
+      const res = await fetchProductByBarcode(barcodeInput);
       const data = Array.isArray(res.data) ? res.data : [res.data];
       setProducts(data);
+
+      // Clear barcode + global search term
+      setBarcodeInput("");
+      setSearchTerm("");
     } catch (err) {
       console.error("Error searching by barcode:", err);
     }
@@ -152,9 +107,14 @@ const handleCategoryChange = (value) => {
   });
 };
 
-  const handleInputChange = (key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-  };
+const handleInputChange = (key, value) => {
+  setFilters((prev) => {
+    const newFilters = { ...prev, [key]: value };
+    console.log("input"+JSON.stringify(newFilters));
+    handleFilterChange(newFilters);
+    return newFilters;
+  });
+};
 
   const clearAllSelections = () => {
     setFilters({
@@ -167,6 +127,12 @@ const handleCategoryChange = (value) => {
     });
   };
 
+  useEffect(() => {
+  if (searchTerm) {
+    handleFilterChange(filters);
+  }
+}); 
+
   return (
     <div className="filters" dir="rtl">
       <div className="filter-header">
@@ -174,193 +140,50 @@ const handleCategoryChange = (value) => {
       </div>
 
       {/* ✅ الفئة */}
-      <div className="filter-group">
-        <div className="row">
-          <div className="col">
-            <h4>الفئة</h4>
-          </div>
-          <div className="col">
-            <button onClick={clearAllSelections} style={{ color: "#C49A6C" }}>
-              مسح الكل
-            </button>
-          </div>
-        </div>
-
-        <div className="category-grid">
-          {categories.map((cat) => {
-            const id = `category-${cat.value}`;
-            return (
-              <div key={cat.value} className="form-check">
-                <input
-                  id={id}
-                  type="checkbox"
-                  className="form-check-input"
-                  checked={filters.selectedCategories.includes(cat.value)}
-                  onChange={() => handleCategoryChange(cat.value)}
-                />
-                <label className="form-check-label" htmlFor={id}>
-                  {cat.label}
-                </label>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <CategoryFilter
+        categories={categories}
+        selectedCategories={filters.selectedCategories}
+        onChange={handleCategoryChange}
+        onClear={clearAllSelections}
+      />
 
       {/* ✅ مصنوع من */}
-      <div className="filter-group">
-        <h4>مصنوع من</h4>
-        {madeFrom.map((m) => {
-          const id = `madeFrom-${m.value}`;
-          return (
-            <div
-              key={m.value}
-              className="form-check"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                marginBottom: "8px",
-              }}
-            >
-              <input
-                id={id}
-                type="radio"
-                className="form-check-input"
-                name="madeFrom"
-                value={m.value}
-                checked={filters.selectedMadeFrom === m.value}
-                onChange={() => handleRadioChange("selectedMadeFrom", m.value)}
-              />
-              <label className="form-check-label" htmlFor={id}>
-                {m.label}
-              </label>
-            </div>
-          );
-        })}
-      </div>
+       <MadeFromFilter
+        madeFrom={madeFrom}
+        selectedMadeFrom={filters.selectedMadeFrom}
+        onChange={(value) => handleRadioChange("selectedMadeFrom", value)}
+      />
+
 
       {/* ✅ الحجم */}
-      <div className="filter-group">
-        <h4>الحجم</h4>
-        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-          <input
-            placeholder="الحجم"
-            className="size-input"
-            value={filters.size}
-            onChange={(e) => handleInputChange("size", e.target.value)}
-          />
-          <select
-            className="size-unit"
-            style={{ direction: "rtl" }}
-            value={filters.sizeUnit}
-            onChange={(e) => handleInputChange("sizeUnit", e.target.value)}
-          >
-            <option value="">اختر</option>
-            {sizeUnits.map((unit) => (
-              <option key={unit.value} value={unit.value}>
-                {unit.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+         <SizeFilter
+        size={filters.size}
+        sizeUnit={filters.sizeUnit}
+        sizeUnits={sizeUnits}
+        onInputChange={handleInputChange}
+      />
 
             {/* ✅الاستخدام  */}
-      <div className="filter-group">
-        <h4>الاستخدام</h4>
-        {usages.map((us) => {
-          const id = `usage-${us.value}`;
-          return (
-            <div
-              key={us.value}
-              className="form-check"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                marginBottom: "8px",
-              }}
-            >
-              <input
-                id={id}
-                type="radio"
-                className="form-check-input"
-                name="usages"
-                value={us.value}
-                checked={filters.selectedUsage === us.value}
-onChange={() => handleRadioChange("selectedUsage", us.value)}
-              />
-              <label className="form-check-label" htmlFor={id}>
-                {us.label}
-              </label>
-            </div>
-          );
-        })}
-      </div>
+      <UsageFilter
+        usages={usages}
+        selectedUsage={filters.selectedUsage}
+        onChange={(value) => handleRadioChange("selectedUsage", value)}
+      />
 
       {/* ✅ مكان التخزين */}
-      <div className="filter-group">
-        <h4>مكان التخزين</h4>
-        {warehouses.map((w) => {
-          const id = `warehouse-${w.value}`;
-          return (
-            <div
-              key={w.value}
-              className="form-check"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                marginBottom: "8px",
-              }}
-            >
-              <input
-                id={id}
-                type="radio"
-                className="form-check-input"
-                name="warehouse"
-                value={w.value}
-                checked={filters.selectedWarehouse === w.value}
-                onChange={() => handleRadioChange("selectedWarehouse", w.value)}
-              />
-              <label className="form-check-label" htmlFor={id}>
-                {w.label}
-              </label>
-            </div>
-          );
-        })}
-      </div>
+     <WarehouseFilter
+        warehouses={warehouses}
+        selectedWarehouse={filters.selectedWarehouse}
+        onChange={(value) => handleRadioChange("selectedWarehouse", value)}
+      />
 
       {/* ✅ الباركود */}
-      <div className="filter-group">
-        <h4>الباركود</h4>
-        <div style={{ display: "flex", gap: "8px" }}>
-          <input
-            placeholder="الباركود"
-            className="size-input"
-            value={filters.barcode}
-            onChange={(e) => handleInputChange("barcode", e.target.value)}
-          />
-          <button
-            onClick={() => {
-              handleBarcodeSearch(filters.barcode);
-              setFilters((prev) => ({ ...prev, barcode: "" })); // clear barcode
-              setSearchTerm(""); // clear top search bar
-            }}
-            style={{
-              padding: "4px 8px",
-              background: "#C49A6C",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            بحث
-          </button>
-        </div>
-      </div>
+    <BarcodeFilter
+  barcode={barcodeInput}
+  onBarcodeChange={setBarcodeInput}
+  onBarcodeSearch={handleBarcodeSearch}
+/>
+
     </div>
   );
 }
