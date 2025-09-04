@@ -1,9 +1,15 @@
+* {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 body, html{
   background-color: #f6f6f6;
   margin: 0;
   padding: 0;
   caret-color: transparent;
   user-select: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 input,

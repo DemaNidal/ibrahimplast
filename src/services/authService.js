@@ -4,6 +4,13 @@ import { API_URL } from '../config/api';
 
 
 export const login = async (username, password) => {
-  const response = await axios.post(`${API_URL}/login`, { username, password });
-  return response.data;
+  try {
+    const res = await axios.post(`${API_URL}/login`, {
+      username,
+      password,
+    });
+    return res.data; // لازم يرجع { token: "...", user: {...} }
+  } catch (error) {
+    throw error.response?.data || error;
+  }
 };
