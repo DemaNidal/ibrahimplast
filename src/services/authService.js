@@ -2,9 +2,10 @@ import axios from 'axios';
 import { API_URL } from '../config/api'; 
 
 
-
+axios.defaults.withCredentials = true;
 export const login = async (username, password) => {
   try {
+
     const res = await axios.post(`${API_URL}/login`, {
       username,
       password,
