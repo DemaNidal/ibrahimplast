@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
-import { API_URL } from '../config/api'; 
+import api from '../config/api'; 
 
 const Dashboard = ({ children }) => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const Dashboard = ({ children }) => {
   axios.defaults.withCredentials = true;
 
   useEffect(()=> {
-    axios.get(`${API_URL}/`)
+    api.get('/')
     .then(res => {
       if(res.data.Status === "Success") {
         console.log("trueeeeeee")
@@ -22,15 +22,18 @@ const Dashboard = ({ children }) => {
           
         setAuth(false)
         setMessage(res.data.Error)
+        navigate('/login'); 
       }
     })
   }, [navigate])
 
   const handleDelete = () => {
-     axios.get(`${API_URL}/logout`)
+     api.get('/logout')
      .then(res => {
       navigate('/login');
-     }).catch(err => console.log(err));
+     }).catch(err => {console.log(err)
+      navigate('/login'); 
+     });
   }
   return (
     <div className='container mt-4'>

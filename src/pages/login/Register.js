@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { API_URL } from "../../config/api";
+import api from "../../config/api";
  import { useNavigate } from 'react-router-dom';
 
 function Register() {
@@ -15,7 +14,7 @@ function Register() {
     console.log("Sending values:", values);
 
     try {
-      const res = await axios.post(`${API_URL}/register`, values);
+      const res = await api.post('/register', values);
         if(res.status === 201){
             navigate("/login");
         }

@@ -25,12 +25,13 @@ function AppRouter() {
         <Route path="addproduct" element={<AddProduct />} />
         <Route path="search" element={<SearchProduct />} />
         <Route path="productview/:id" element={<ProductView />} />
-        <Route path="/register" element={<Register />} />
       </Route>
 
-      {/* Public route */}
+      {/* Public routes */}
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
     </Routes>
   );
 }
+
 export default AppRouter;
