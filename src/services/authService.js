@@ -3,6 +3,7 @@ import api from '../config/api';
 
 
 axios.defaults.withCredentials = true;
+
 export const login = async (username, password) => {
   try {
 
@@ -10,8 +11,9 @@ export const login = async (username, password) => {
       username,
       password,
     });
+    localStorage.setItem('user-token', res.data.token);
     return res.data; // لازم يرجع { token: "...", user: {...} }
   } catch (error) {
-    throw error.response?.data || error;
+    throw error.response?.data || error;   
   }
 };
