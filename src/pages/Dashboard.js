@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import api from '../config/api'; 
+import { logout } from '../services/authService';
 
 const Dashboard = ({ children }) => {
   const navigate = useNavigate();
@@ -27,14 +28,22 @@ const Dashboard = ({ children }) => {
     })
   }, [navigate])
 
-  const handleDelete = () => {
-     api.get('/logout')
-     .then(res => {
-      navigate('/login');
-     }).catch(err => {console.log(err)
-      navigate('/login'); 
-     });
+  const handleDelete = async () => {
+  try {
+    const res = await logout();
+
+    if (res.Status === "Success") {
+      // Clear old storage-based tokens
+    
+      sessionStorage.removeItem("user-token");
+
+      window.location.href = "/login"; // redirect
+    }
+  } catch (error) {
+    console.error("Logout failed", error);
   }
+};
+
   return (
     <div className='container mt-4'>
       {

@@ -11,9 +11,18 @@ export const login = async (username, password) => {
       username,
       password,
     });
-    localStorage.setItem('user-token', res.data.token);
+    sessionStorage.setItem('user-token', res.data.token);
     return res.data; // لازم يرجع { token: "...", user: {...} }
   } catch (error) {
     throw error.response?.data || error;   
+  }
+};
+
+export const logout = async () => {
+  try {
+    const res = await api.post("/logout", {}, { withCredentials: true });
+    return res.data;
+  } catch (err) {
+    throw err;
   }
 };

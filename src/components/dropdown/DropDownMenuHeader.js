@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Children, cloneElement } from "react";
 
 export default function SidebarMenu({ trigger, children }) {
   const [show, setShow] = useState(false);
@@ -6,7 +6,11 @@ export default function SidebarMenu({ trigger, children }) {
   // Close on outside click
   useEffect(() => {
     const closeOnOutsideClick = (e) => {
-      if (show && !e.target.closest(".sidebar-menu") && !e.target.closest(".menu-trigger")) {
+      if (
+        show &&
+        !e.target.closest(".sidebar-menu") &&
+        !e.target.closest(".menu-trigger")
+      ) {
         setShow(false);
       }
     };
@@ -26,18 +30,23 @@ export default function SidebarMenu({ trigger, children }) {
       {/* Sidebar */}
       <div className={`sidebar-menu ${show ? "open" : ""}`}>
         <div className="sidebar-content">
-          {children}
+          {Children.map(children, (child) =>
+            cloneElement(child, { closeSidebar: () => setShow(false) })
+          )}
         </div>
       </div>
     </>
   );
 }
 
-export function SidebarItem({ children, onClick }) {
+export function SidebarItem({ children, onClick, closeSidebar }) {
   return (
     <div
       className="sidebar-item"
-      onClick={onClick}
+      onClick={() => {
+        if (onClick) onClick();
+        if (closeSidebar) closeSidebar(); // ✅ close sidebar after navigation
+      }}
     >
       {children}
     </div>

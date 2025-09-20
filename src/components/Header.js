@@ -3,8 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IoCameraOutline } from "react-icons/io5";
-import { faBarsStaggered, faUser, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faBarsStaggered, faUser, faMagnifyingGlass , faRightFromBracket, faPlus} from '@fortawesome/free-solid-svg-icons';
 import SidebarMenu,{SidebarItem} from './dropdown/DropDownMenuHeader';
+import api from '../config/api';
 
 const Header = ({ searchTerm, setSearchTerm }) => {
   const fileInputRef = useRef(null);
@@ -45,6 +46,24 @@ const Header = ({ searchTerm, setSearchTerm }) => {
     }
   };
 
+const handleDelete = () => {
+  sessionStorage.removeItem("user-token");
+  console.log("After remove:", sessionStorage.getItem("user-token")); // should be null
+
+  api.get('/logout')
+    .then(res => {
+      console.log("Logout response:", res.data);
+      console.log("After API call:", sessionStorage.getItem("user-token"));
+      navigate('/login');
+    })
+    .catch(err => {
+      console.log("Error:", err);
+      console.log("After error:", sessionStorage.getItem("user-token"));
+      navigate('/login');
+    });
+};
+
+
   return (
     <div className="header">
       <div className="header-left">
@@ -75,10 +94,16 @@ const Header = ({ searchTerm, setSearchTerm }) => {
       <div className="header-right">
         <SidebarMenu trigger={<FontAwesomeIcon icon={faBarsStaggered} />}>
   <SidebarItem onClick={() => navigate('/profile')}>
-    <FontAwesomeIcon icon={faUser} /> Profile
+    <FontAwesomeIcon icon={faUser} /> الحساب الشخصي
   </SidebarItem>
-  <SidebarItem onClick={() => console.log("Logout")}>
-    <FontAwesomeIcon icon={faUser} /> Logout
+    <SidebarItem onClick={() => navigate('/search') }>
+    <FontAwesomeIcon icon={faMagnifyingGlass}/> البحث عن منتج
+  </SidebarItem>
+   <SidebarItem onClick={() => navigate('/addproduct') }>
+    <FontAwesomeIcon icon={faPlus}/> اضافة منتج
+  </SidebarItem>
+  <SidebarItem onClick={handleDelete}>
+    <FontAwesomeIcon icon={faRightFromBracket}/> تسجيل الخروج
   </SidebarItem>
 </SidebarMenu>
         <FontAwesomeIcon className="icon profile-icon" icon={faUser} />
