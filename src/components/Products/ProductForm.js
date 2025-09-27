@@ -24,12 +24,14 @@ const handleSave = async (e) => {
 Object.entries(product).forEach(([key, value]) => {
   if (key === "imageFile" || value === null || value === "") return;
 
-  if (["color", "quantities", "locations"].includes(key)) {
+  // quantities + color are arrays, stringify them
+  if (["color", "quantities"].includes(key)) {
     formData.append(key, JSON.stringify(value));
   } else {
     formData.append(key, value);
   }
 });
+
 
 if (product.imageFile) {
   formData.append("image", product.imageFile);

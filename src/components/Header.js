@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IoCameraOutline } from "react-icons/io5";
-import { faBarsStaggered, faUser, faMagnifyingGlass , faRightFromBracket, faPlus} from '@fortawesome/free-solid-svg-icons';
+import { faBarsStaggered, faUser, faMagnifyingGlass , faRightFromBracket, faPlus, faHouse} from '@fortawesome/free-solid-svg-icons';
 import SidebarMenu,{SidebarItem} from './dropdown/DropDownMenuHeader';
 import api from '../config/api';
 
@@ -93,6 +93,10 @@ const handleDelete = () => {
 
       <div className="header-right">
         <SidebarMenu trigger={<FontAwesomeIcon icon={faBarsStaggered} />}>
+        
+        <SidebarItem onClick={() => navigate('/')}>
+    <FontAwesomeIcon icon={faHouse} /> الصفحة الرئيسية 
+  </SidebarItem>
   <SidebarItem onClick={() => navigate('/profile')}>
     <FontAwesomeIcon icon={faUser} /> الحساب الشخصي
   </SidebarItem>
@@ -105,6 +109,8 @@ const handleDelete = () => {
   <SidebarItem onClick={handleDelete}>
     <FontAwesomeIcon icon={faRightFromBracket}/> تسجيل الخروج
   </SidebarItem>
+  
+  
 </SidebarMenu>
         <FontAwesomeIcon className="icon profile-icon" icon={faUser} />
       </div>

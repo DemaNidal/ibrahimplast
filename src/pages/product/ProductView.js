@@ -83,6 +83,7 @@ const ProductView = () => {
               onClick={() => printBarcode(product, barcodeValue)}
             />
           </div>
+          <button>اعرض</button>
         </div>
 
         <div className="product-image-container">
@@ -93,7 +94,9 @@ const ProductView = () => {
           />
 
           <div className="product-shadow"></div>
+        
         </div>
+
       </div>
     </div>
   );

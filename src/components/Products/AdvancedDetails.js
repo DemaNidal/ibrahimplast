@@ -22,52 +22,55 @@ const AdvancedDetails = () => {
   const { product, setProduct } = useProduct();
 
   const addQuantity = () => {
-    setProduct((prev) => ({
-      ...prev,
-      quantities: [
-        ...(prev.quantities || []),
-        {
-          rows: "",
-          perRow: "",
-          unit_id: null,
-        },
-      ],
-    }));
-  };
+  setProduct((prev) => ({
+    ...prev,
+    quantities: [
+      ...(prev.quantities || []),
+      {
+        rows: "",
+        perRow: "",
+        unit_id: null,
+        locations: [], // ✅ locations belong to this quantity
+      },
+    ],
+  }));
+};
 
   const removeQuantity = (index) => {
     const updated = product.quantities.filter((_, i) => i !== index);
     setProduct((prev) => ({ ...prev, quantities: updated }));
   };
 
-  const handleQuantityChange = (index, field, value) => {
+const handleQuantityChange = (index, field, value) => {
+  const updated = [...product.quantities];
+  updated[index][field] = value;
+  setProduct((prev) => ({ ...prev, quantities: updated }));
+};
+
+  
+  const addLocationToQuantity = (qtyIndex) => {
     const updated = [...product.quantities];
-    updated[index][field] = value;
+    updated[qtyIndex].locations.push({
+      location: "",
+      warehouse_id: null,
+    });
     setProduct((prev) => ({ ...prev, quantities: updated }));
   };
 
-  const addLocation = () => {
-    setProduct((prev) => ({
-      ...prev,
-      locations: [
-        ...(prev.locations || []),
-        {
-          location: "",
-          warehouse_id: null,
-        },
-      ],
-    }));
+
+  const removeLocationFromQuantity = (qtyIndex, locIndex) => {
+    const updated = [...product.quantities];
+    updated[qtyIndex].locations = updated[qtyIndex].locations.filter(
+      (_, i) => i !== locIndex
+    );
+    setProduct((prev) => ({ ...prev, quantities: updated }));
   };
 
-  const removeLocation = (index) => {
-    const updated = product.locations.filter((_, i) => i !== index);
-    setProduct((prev) => ({ ...prev, locations: updated }));
-  };
 
-  const handleLocationChange = (index, field, value) => {
-    const updated = [...product.locations];
-    updated[index][field] = value;
-    setProduct((prev) => ({ ...prev, locations: updated }));
+const handleLocationChange = (qtyIndex, locIndex, field, value) => {
+    const updated = [...product.quantities];
+    updated[qtyIndex].locations[locIndex][field] = value;
+    setProduct((prev) => ({ ...prev, quantities: updated }));
   };
 
   return (
@@ -127,8 +130,7 @@ const AdvancedDetails = () => {
             placeholder="اختر الوحدة"
           />
         </Row>
-
-        <h5 className="mb-3">الكميات</h5>
+ <h5 className="mb-3">الكميات</h5>
         {(product.quantities || []).map((qty, index) => (
           <div key={index} className="mb-4 border rounded p-3 bg-light">
             <Row className="mb-3">
@@ -167,6 +169,67 @@ const AdvancedDetails = () => {
               </Col>
             </Row>
 
+            {/* ✅ Nested locations */}
+            <h6>المواقع</h6>
+            {(qty.locations || []).map((loc, locIndex) => (
+              <Row key={locIndex} className="mb-3">
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>الموقع</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={loc.location}
+                      onChange={(e) =>
+                        handleLocationChange(
+                          index,
+                          locIndex,
+                          "location",
+                          e.target.value
+                        )
+                      }
+                      placeholder="أدخل الموقع"
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <CustomDropDown
+                    options={warehouseOptions}
+                    value={
+                      warehouseOptions.find(
+                        (opt) => opt.value === loc.warehouse_id
+                      ) || null
+                    }
+                    onChange={(selected) =>
+                      handleLocationChange(
+                        index,
+                        locIndex,
+                        "warehouse_id",
+                        selected?.value || null
+                      )
+                    }
+                    placeholder="اختر المخزن"
+                  />
+                </Col>
+                <Col md={12} className="text-end mt-2">
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => removeLocationFromQuantity(index, locIndex)}
+                  >
+                    حذف الموقع
+                  </Button>
+                </Col>
+              </Row>
+            ))}
+
+            <Button
+              variant="outline-primary"
+              size="sm"
+              onClick={() => addLocationToQuantity(index)}
+            >
+              ➕ إضافة موقع
+            </Button>
+
             <div className="text-end mt-3">
               <Button
                 variant="danger"
@@ -186,58 +249,7 @@ const AdvancedDetails = () => {
         >
           ➕ إضافة كمية
         </Button>
-
-        <h5 className="mb-3">المواقع</h5>
-        {(product.locations || []).map((loc, index) => (
-          <div key={index} className="mb-4 border rounded p-3 bg-light">
-            <Row className="mb-3">
-              <Col md={6}>
-                <Form.Group>
-                  <Form.Label>الموقع</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={loc.location}
-                    onChange={(e) =>
-                      handleLocationChange(index, "location", e.target.value)
-                    }
-                    placeholder="أدخل الموقع"
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <CustomDropDown
-                  options={warehouseOptions}
-                  value={
-                    warehouseOptions.find(
-                      (opt) => opt.value === loc.warehouse_id
-                    ) || null
-                  }
-                  onChange={(selected) =>
-                    handleLocationChange(
-                      index,
-                      "warehouse_id",
-                      selected?.value || null
-                    )
-                  }
-                  placeholder="اختر المخزن"
-                />
-              </Col>
-            </Row>
-            <div className="text-end">
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => removeLocation(index)}
-              >
-                حذف الموقع
-              </Button>
-            </div>
-          </div>
-        ))}
-
-        <Button variant="outline-primary" onClick={addLocation}>
-          ➕ إضافة موقع
-        </Button>
+     
       </Card.Body>
     </Card>
   );

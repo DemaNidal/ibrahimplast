@@ -8,6 +8,7 @@ import SearchProduct from '../pages/product/SearchProduct';
 import ProductView from "../pages/product/ProductView";
 import PrivateRoute from "../router/PrivateRoute";
 import Register from '../pages/login/Register';
+import Profile from '../pages/Profile';
 
 function AppRouter() {
   return (
@@ -25,6 +26,7 @@ function AppRouter() {
         <Route path="addproduct" element={<AddProduct />} />
         <Route path="search" element={<SearchProduct />} />
         <Route path="productview/:id" element={<ProductView />} />
+        <Route path='/profile' element={<Profile />}></Route>
       </Route>
 
       {/* Public routes */}
