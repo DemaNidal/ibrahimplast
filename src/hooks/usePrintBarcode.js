@@ -2,12 +2,13 @@
 import { useCallback } from "react";
 
 const usePrintBarcode = () => {
-  const printBarcode = useCallback((product, barcodeValue) => {
+  const printBarcode = useCallback((product, barcodeValue, extraInfo = {}) => {
+    const { warehouse_name, location, quantity_total, unit } = extraInfo;
     const printWindow = window.open("", "PRINT", "height=1000,width=1000");
 
-    const locationText = product.locations
-      ?.map((loc) => `${loc.location} - ${loc.warehouse_name}`)
-      .join(", ");
+    // const locationText = product.locations
+    //   ?.map((loc) => `${loc.location} - ${loc.warehouse_name}`)
+    //   .join(", ");
 
     const htmlContent = `
 <html>
@@ -56,8 +57,8 @@ const usePrintBarcode = () => {
   <body>
     <div class="product-name">${product.product_name}</div>
     <svg id="barcode"></svg>
-    <div class="product-location">${locationText || ""}</div>
-    <div class="barcode-value">${barcodeValue}</div>
+    <div class="product-location">${warehouse_name || "غير محدد"} – ${location || "غير محدد"}</div>
+    <div class="barcode-value">الكمية: ${quantity_total || ""} ${unit || ""}</div>
   </body>
 </html>
 `;

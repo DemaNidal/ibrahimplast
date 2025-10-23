@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   MDBCard,
@@ -12,19 +13,24 @@ function ProductCard({ product }) {
   const navigate = useNavigate();
 
   const {
+    product_id,
     name,
     image_url,
-    location,
+    
     size_value,
     sizeUnit,
     price,
     currency,
     category,
     colors = [],
-    product_id,
+    quantities = [],
   } = product;
 
-  const status = "متوفر"; // لاحقاً يمكن ربطها بالحالة الحقيقية
+  // ✅ حساب المخزون الكلي
+  const totalStock = quantities.reduce((sum, q) => sum + (q.total || 0), 0);
+
+  // ✅ كل المواقع من كل الكميات
+  const allLocations = quantities.flatMap((q) => q.locations || []);
 
   return (
     <MDBCard
@@ -33,9 +39,9 @@ function ProductCard({ product }) {
       style={{ transition: "transform 0.2s", cursor: "pointer" }}
       onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
       onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-      onClick={() => navigate(`/productview/${product_id}`)} // ✅ هنا كانت المشكلة
+      onClick={() => navigate(`/productview/${product_id}`)}
     >
-      {status === "غير متوفر" && (
+      {totalStock === 0 && (
         <div
           className="position-absolute top-0 start-0 bg-danger text-white px-3 py-1"
           style={{
@@ -47,7 +53,6 @@ function ProductCard({ product }) {
           غير متوفر
         </div>
       )}
-
       <MDBCardImage
         src={`${process.env.REACT_APP_API_URL}/uploads/${image_url}`}
         alt="صورة المنتج"
@@ -63,6 +68,7 @@ function ProductCard({ product }) {
       />
 
       <MDBCardBody className="p-4">
+        {/* اسم المنتج */}
         <div className="text-center mb-3">
           <MDBCardTitle
             className="fs-5 fw-bold mb-1 text-truncate"
@@ -70,14 +76,15 @@ function ProductCard({ product }) {
           >
             {name}
           </MDBCardTitle>
-          <p className="text-muted small">{location || "—"}</p>
+          <p className="text-muted small">{category || "—"}</p>
         </div>
 
+        {/* تفاصيل المنتج الأساسية */}
         <div className="mb-2">
           {[
-            { label: "الحجم", value: `${size_value} ${sizeUnit}` },
-            { label: "السعر", value: `${price} ${currency}` },
-            { label: "الفئة", value: category },
+            { label: "الحجم", value: `${size_value} ${sizeUnit || ""}` },
+            { label: "السعر", value: `${price} ${currency || ""}` },
+            { label: "المخزون الكلي", value: `${totalStock} وحدة` },
           ].map((item, idx) => (
             <div className="d-flex justify-content-between mb-1" key={idx}>
               <span className="text-muted">{item.label}</span>
@@ -85,8 +92,9 @@ function ProductCard({ product }) {
             </div>
           ))}
 
+          {/* الألوان */}
           <div className="d-flex justify-content-between align-items-center mt-2">
-            <span className="text-muted">اللون</span>
+            <span className="text-muted">الألوان</span>
             <div className="d-flex gap-2">
               {colors.map((color, index) => (
                 <div
@@ -106,9 +114,26 @@ function ProductCard({ product }) {
         </div>
 
         <hr className="my-3" />
+
+        {/* المواقع (عرض أول موقعين فقط) */}
+        {allLocations.length > 0 ? (
+          <div className="small">
+            {allLocations.slice(0, 2).map((loc, idx) => (
+              <div key={idx} className="text-muted">
+                🏬 {loc.warehouse_name} - 📍 {loc.location}
+              </div>
+            ))}
+            {allLocations.length > 2 && (
+              <div className="text-muted">+ المزيد...</div>
+            )}
+          </div>
+        ) : (
+          <p className="text-muted small">لا يوجد مواقع مسجلة</p>
+        )}
       </MDBCardBody>
     </MDBCard>
   );
 }
 
 export default ProductCard;
+

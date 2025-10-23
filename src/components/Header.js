@@ -1,18 +1,20 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect,useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IoCameraOutline } from "react-icons/io5";
-import { faBarsStaggered, faUser, faMagnifyingGlass , faRightFromBracket, faPlus, faHouse} from '@fortawesome/free-solid-svg-icons';
-import SidebarMenu,{SidebarItem} from './dropdown/DropDownMenuHeader';
+import { faUser, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import SidebarMenu from './Menu/SidebarMenu';
+// import SidebarMenu,{SidebarItem} from './dropdown/DropDownMenuHeader';
 import api from '../config/api';
 
 const Header = ({ searchTerm, setSearchTerm }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const [inputKey, setInputKey] = React.useState(Date.now());
-
+ const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   useEffect(() => {
     if (location.state?.clearSearch) {
       setSearchTerm('');
@@ -92,29 +94,13 @@ const handleDelete = () => {
       </div>
 
       <div className="header-right">
-        <SidebarMenu trigger={<FontAwesomeIcon icon={faBarsStaggered} />}>
-        
-        <SidebarItem onClick={() => navigate('/')}>
-    <FontAwesomeIcon icon={faHouse} /> الصفحة الرئيسية 
-  </SidebarItem>
-  <SidebarItem onClick={() => navigate('/profile')}>
-    <FontAwesomeIcon icon={faUser} /> الحساب الشخصي
-  </SidebarItem>
-    <SidebarItem onClick={() => navigate('/search') }>
-    <FontAwesomeIcon icon={faMagnifyingGlass}/> البحث عن منتج
-  </SidebarItem>
-   <SidebarItem onClick={() => navigate('/addproduct') }>
-    <FontAwesomeIcon icon={faPlus}/> اضافة منتج
-  </SidebarItem>
-  <SidebarItem onClick={handleDelete}>
-    <FontAwesomeIcon icon={faRightFromBracket}/> تسجيل الخروج
-  </SidebarItem>
-  
-  
-</SidebarMenu>
+        <SidebarMenu isOpen={isSidebarOpen} onClose={toggleSidebar} handleDelete={handleDelete}  />
+
         <FontAwesomeIcon className="icon profile-icon" icon={faUser} />
       </div>
+      
     </div>
+    
   );
 };
 

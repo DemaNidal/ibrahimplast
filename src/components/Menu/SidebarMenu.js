@@ -1,63 +1,74 @@
-// import React from 'react';
-// import { Sidebar, Menu, MenuItem, useProSidebar, SubMenu } from 'react-pro-sidebar';
-// import '../../styles/SidebarMenu.css';
-// import { Link } from 'react-router-dom';
-// import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-// import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
-// import ReceiptRoundedIcon from "@mui/icons-material/ReceiptRounded";
-// import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBarsStaggered,
+  faHouse,
+  faUser,
+  faMagnifyingGlass,
+  faPlus,
+  faRightFromBracket,
+  faMapMarkedAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import "../../styles/SidebarMenu.css";
 
-// import WalletRoundedIcon from "@mui/icons-material/WalletRounded";
-// import AccountBalanceRoundedIcon from "@mui/icons-material/AccountBalanceRounded";
-// import SavingsRoundedIcon from "@mui/icons-material/SavingsRounded";
-// import MonetizationOnRoundedIcon from "@mui/icons-material/MonetizationOnRounded";
-// import SettingsApplicationsRoundedIcon from "@mui/icons-material/SettingsApplicationsRounded";
-// import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-// import ShieldRoundedIcon from "@mui/icons-material/ShieldRounded";
-// import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
-// import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+const SidebarMenu = ({ handleDelete }) => {
+  const navigate = useNavigate();
 
+  return (
+    <div className="sidebar-container">
+      {/* Trigger Icon */}
+      <div className="sidebar-trigger">
+        <FontAwesomeIcon icon={faBarsStaggered} />
+      </div>
 
-// const SidebarMenu = () => {
-//   const { collapseSidebar } = useProSidebar();
-//   return (
-//    <div className="app" style={{ display: "flex", height: "100vh" }}>
-//       <Sidebar >
-//         <Menu collapseSidebar>
-//           <MenuItem className="menu1" icon={<MenuRoundedIcon
-//                 onClick={() => {
-//                   collapseSidebar();
-//                 }}
-//               />}>
-//             <img src="logo192.png" alt="Girl in a jacket" style={{width:"180px",height:"100px"}}></img>
-//           </MenuItem>
-//           <MenuItem icon={<GridViewRoundedIcon />} component={<Link to="/" />}> Dashboard </MenuItem>
-//           <MenuItem icon={<ReceiptRoundedIcon />}> Invoices </MenuItem>
-// <MenuItem
-//   icon={<BarChartRoundedIcon />}
-//   component={<Link to="/addproduct" />}
-// >
-//   Charts
-// </MenuItem>      
-//    <SubMenu label="Wallets" icon={<WalletRoundedIcon />}>
-//             <MenuItem icon={<AccountBalanceRoundedIcon />}>
-//               Current Wallet
-//             </MenuItem>
-//             <MenuItem icon={<SavingsRoundedIcon />}>Savings Wallet</MenuItem>
-//           </SubMenu>
-//           <MenuItem icon={<MonetizationOnRoundedIcon />}>Transactions</MenuItem>
-//           <SubMenu label="Settings" icon={<SettingsApplicationsRoundedIcon />}>
-//             <MenuItem icon={<AccountCircleRoundedIcon />}> Account </MenuItem>
-//             <MenuItem icon={<ShieldRoundedIcon />}> Privacy </MenuItem>
-//             <MenuItem icon={<NotificationsRoundedIcon />}>
-//               Notifications
-//             </MenuItem>
-//           </SubMenu>
-//           <MenuItem icon={<LogoutRoundedIcon />} component={<Link to="/login" />}> Logout </MenuItem> 
-//         </Menu>
-//       </Sidebar>
-//     </div>
-//   );
-// };
+      {/* Sidebar Menu */}
+      <div className="sidebar">
+        <div className="sidebar-header">
+          <h4>الابراهيم بلاست</h4>
+          <p className="sidebar-subtitle">نظام إدارة المخازن</p>
+        </div>
 
-// export default SidebarMenu;
+        <div className="sidebar-items">
+          <div className="sidebar-item" onClick={() => navigate("/")}>
+            <FontAwesomeIcon icon={faHouse} /> الصفحة الرئيسية
+          </div>
+
+          <div className="sidebar-item" onClick={() => navigate("/profile")}>
+            <FontAwesomeIcon icon={faUser} /> الحساب الشخصي
+          </div>
+
+          <div className="sidebar-item" onClick={() => navigate("/search")}>
+            <FontAwesomeIcon icon={faMagnifyingGlass} /> البحث عن منتج
+          </div>
+
+          <div className="sidebar-item" onClick={() => navigate("/addproduct")}>
+            <FontAwesomeIcon icon={faPlus} /> إضافة منتج
+          </div>
+
+          <div className="sidebar-item logout" onClick={handleDelete}>
+            <FontAwesomeIcon icon={faRightFromBracket} /> تسجيل الخروج
+          </div>
+        </div>
+
+        {/* Mini Map */}
+        <div className="sidebar-map">
+          <h6>
+            <FontAwesomeIcon icon={faMapMarkedAlt} /> الموقع 
+          </h6>
+          <iframe
+            title="warehouse-map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1688.0165100297902!2d35.27318608402885!3d32.20334089719299!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151ce09ac87e9555%3A0x2c3f03b28a71e5b6!2sSamaritan%20Museum!5e0!3m2!1sar!2s!4v1761036201277!5m2!1sar!2s"
+            width="100%"
+            height="120"
+            style={{ border: 0, borderRadius: "10px" }}
+            allowFullScreen=""
+            loading="lazy"
+          ></iframe>
+
+        </div>
+      </div>
+    </div>
+  );
+};
+export default SidebarMenu;
