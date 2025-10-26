@@ -227,7 +227,7 @@ const Dashboard = () => {
             </h5>
             <div className="d-flex justify-content-center flex-wrap gap-3">
               <Link
-                to="/add-product"
+                to="/addproduct"
                 className="btn btn-lg"
                 style={{
                   backgroundColor: "#d4af37",

@@ -3,7 +3,7 @@ import { useCallback } from "react";
 
 const usePrintBarcode = () => {
   const printBarcode = useCallback((product, barcodeValue, extraInfo = {}) => {
-    const { warehouse_name, location, quantity_total, unit } = extraInfo;
+    const { warehouse_name, location,  quantity, quantityPerRows, unit } = extraInfo;
     const printWindow = window.open("", "PRINT", "height=1000,width=1000");
 
     // const locationText = product.locations
@@ -47,18 +47,22 @@ const usePrintBarcode = () => {
         margin-bottom: 4px;
       }
       .barcode-value {
-        font-size: 16px;
-        letter-spacing: 6px;
-        margin-top: 4px;
-        margin-bottom: 6px;
-      }
+  font-family: "Arial", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 5px;
+  letter-spacing: 0;       /* ✅ removes gaps between digits */
+  white-space: nowrap;     /* ✅ keeps digits together */
+}
+
     </style>
   </head>
   <body>
     <div class="product-name">${product.product_name}</div>
     <svg id="barcode"></svg>
     <div class="product-location">${warehouse_name || "غير محدد"} – ${location || "غير محدد"}</div>
-    <div class="barcode-value">الكمية: ${quantity_total || ""} ${unit || ""}</div>
+    <div class="barcode-value">${quantity}x${quantityPerRows}${ unit|| ""}</div>
   </body>
 </html>
 `;
