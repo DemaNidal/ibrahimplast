@@ -5,7 +5,7 @@ import AddProduct from '../pages/product/AddProduct';
 import Dashboard from '../pages/Dashboard';
 import DashboardLayout from '../layout/DashboardLayout';
 import SearchProduct from '../pages/product/SearchProduct';
-import ProductView from "../pages/product/ProductView";
+import ProductView from "../pages/ProductView/ProductView";
 import PrivateRoute from "../router/PrivateRoute";
 import Register from '../pages/login/Register';
 import Profile from '../pages/Profile';

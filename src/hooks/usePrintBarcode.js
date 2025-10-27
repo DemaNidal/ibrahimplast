@@ -3,7 +3,8 @@ import { useCallback } from "react";
 
 const usePrintBarcode = () => {
   const printBarcode = useCallback((product, barcodeValue, extraInfo = {}) => {
-    const { warehouse_name, location,  quantity, quantityPerRows, unit } = extraInfo;
+    const { warehouse_name, location, quantity_rows, quantity_per_row, unit } = extraInfo;
+
     const printWindow = window.open("", "PRINT", "height=1000,width=1000");
 
     // const locationText = product.locations
@@ -62,7 +63,7 @@ const usePrintBarcode = () => {
     <div class="product-name">${product.product_name}</div>
     <svg id="barcode"></svg>
     <div class="product-location">${warehouse_name || "غير محدد"} – ${location || "غير محدد"}</div>
-    <div class="barcode-value">${quantity}x${quantityPerRows}${ unit|| ""}</div>
+    <div class="barcode-value">${quantity_rows}x${quantity_per_row}${ unit|| ""}</div>
   </body>
 </html>
 `;

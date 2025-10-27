@@ -2,13 +2,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../../styles/ProductView.css";
-import Barcode from "react-barcode";
-import { FaPrint, FaHistory } from "react-icons/fa";
+import { FaHistory } from "react-icons/fa";
 
 import { fetchProductById } from "../../services/productService";
-import { getMovementsByProduct, addMovement } from "../../services/movementService";
-import ColorList from "../../components/ProductView/ColorList";
+import {
+  getMovementsByProduct,
+  addMovement,
+} from "../../services/movementService";
 import usePrintBarcode from "../../hooks/usePrintBarcode";
+
+import ProductHeader from "./ProductHeader";
+import ProductQuantities from "./ProductQuantities";
+import ProductBarcodes from "./ProductBarcodes";
 
 const ProductView = () => {
   const { id } = useParams();
@@ -67,7 +72,8 @@ const ProductView = () => {
     }
 
     // quantityLocationValue format is "quantityId-locationId" (locationId optional)
-    const [quantity_id_str, location_id_str] = movementForm.quantityLocationValue.split("-");
+    const [quantity_id_str, location_id_str] =
+      movementForm.quantityLocationValue.split("-");
     const quantity_id = parseInt(quantity_id_str, 10);
     const location_id = location_id_str ? parseInt(location_id_str, 10) : null;
 
@@ -113,7 +119,9 @@ const ProductView = () => {
         <div className="product-card image-column">
           <div className="image-wrap">
             <img
-              src={`${process.env.REACT_APP_IMAGE_BASE_URL || ""}${product.image_url || ""}`}
+              src={`${process.env.REACT_APP_IMAGE_BASE_URL || ""}${
+                product.image_url || ""
+              }`}
               alt={product.product_name || "product"}
               className="product-image"
             />
@@ -122,122 +130,14 @@ const ProductView = () => {
 
         {/* Info Column */}
         <div className="info-column">
-          <div className="product-box header-box">
-            <div className="title-row">
-              <h2 className="product-title">{product.product_name}</h2>
-              <div className="category-badge">
-                {product.category_name} • {product.size_value} {product.size_unit_name}
-              </div>
-            </div>
-            <p className="product-notes">{product.notes}</p>
-
-            <div className="meta-row">
-              <div><strong>الاستخدام:</strong> {product.usage_name || "—"}</div>
-              <div><strong>المادة:</strong> {product.made_from_name || "—"}</div>
-              <div><strong>السعر:</strong> {product.price ? `${product.price} ${product.currency_name || ""}` : "—"}</div>
-            </div>
-
-            <div className="colors-row">
-              <ColorList colors={product.colors || []} />
-            </div>
-          </div>
-
-          {/* Quantities & locations box */}
-          <div className="product-box quantities-box">
-            <h3 className="box-title">الكميات والمواقع</h3>
-
-            <div className="quantities-grid">
-              {product.quantities && product.quantities.length > 0 ? (
-                product.quantities.map((q) => (
-                  <div className="quantity-card" key={q.quantity_id}>
-                    <div className="quantity-top">
-                      <div className="qty-id"># {q.quantity_id}</div>
-                      <div className="qty-total">
-                        {q.quantity_rows} × {q.quantity_per_row} ={" "}
-                        <strong>{(q.quantity_rows || 0) * (q.quantity_per_row || 0)}</strong>{" "}
-                        {product.quantity_unit || ""}
-                      </div>
-                    </div>
-
-                    <div className="locations-compact">
-                      {q.locations && q.locations.length > 0 ? (
-                        q.locations.map((loc) => (
-                          <div className="location-chip" key={loc.location_id}>
-                            <div className="loc-warehouse">{loc.warehouse_name}</div>
-                            <div className="loc-name">{loc.location}</div>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="no-location">لا يوجد مواقع</div>
-                      )}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p>لا توجد كميات مسجلة</p>
-              )}
-            </div>
-          </div>
-
-          {/* Barcode box */}
-          <div className="product-box barcode-box">
-            <h3 className="box-title">الباركود — لكل موقع</h3>
-            <div className="barcode-list">
-              {product.quantities && product.quantities.length > 0 ? (
-                product.quantities.flatMap((q) =>
-                  (q.locations || []).map((loc) => {
-                    const barcodeValue = `${product.product_id}-${q.quantity_id}-${loc.location_id}`;
-                    return (
-                      <div className="barcode-row" key={`${q.quantity_id}-${loc.location_id}`}>
-                        <div className="barcode-info">
-                          <div className="barcode-name">{product.product_name}</div>
-                          <div className="barcode-sub">
-                            {loc.warehouse_name} — {loc.location}
-                          </div>
-                          <div className="barcode-qty">
-                            {q.quantity_rows} × {q.quantity_per_row} {product.quantity_unit || ""}
-                          </div>
-                        </div>
-
-                        <div className="barcode-actions">
-                          <Barcode
-                            value={barcodeValue}
-                            height={46}
-                            width={1.2}
-                            displayValue={false}
-                            background="#fff"
-                            lineColor="#000"
-                          />
-                          <button
-                            className="print-btn"
-                            onClick={() =>
-                              printBarcode(product, barcodeValue, {
-                                warehouse_name: loc.warehouse_name,
-                                location: loc.location,
-                                quantity_rows: q.quantity_rows,
-                                quantity_per_row: q.quantity_per_row,
-                                unit: product.quantity_unit,
-                              })
-                            }
-                            title="طباعة"
-                          >
-                            <FaPrint />
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })
-                )
-              ) : (
-                <p>لا توجد مواقع لعرض الباركود</p>
-              )}
-            </div>
-          </div>
+          <ProductHeader product={product} />
+          <ProductQuantities product={product} />
+          <ProductBarcodes product={product} printBarcode={printBarcode} />
 
           {/* Movement / form box */}
           <div className="product-box movement-box">
             <div className="movement-top">
-              <h3 className="box-title">حركة مخزون</h3>
+              <h3 className="box-title">💼 حركة المخزون</h3>
               <button
                 className="history-toggle"
                 onClick={() => setShowMovements((s) => !s)}
@@ -247,12 +147,16 @@ const ProductView = () => {
             </div>
 
             <div className="movement-form">
+              {/* اختيار الموقع / الكمية */}
               <label className="form-row">
                 <span>اختر الموقع / الكمية</span>
                 <select
                   value={movementForm.quantityLocationValue}
                   onChange={(e) =>
-                    setMovementForm({ ...movementForm, quantityLocationValue: e.target.value })
+                    setMovementForm({
+                      ...movementForm,
+                      quantityLocationValue: e.target.value,
+                    })
                   }
                 >
                   <option value="">-- اختر --</option>
@@ -270,12 +174,15 @@ const ProductView = () => {
                 </select>
               </label>
 
-              <div className="form-row small-2">
+              {/* تفاصيل الحركة */}
+              <div className="form-row triple">
                 <label>
                   <span>نوع الحركة</span>
                   <select
                     value={movementForm.type}
-                    onChange={(e) => setMovementForm({ ...movementForm, type: e.target.value })}
+                    onChange={(e) =>
+                      setMovementForm({ ...movementForm, type: e.target.value })
+                    }
                   >
                     <option value="in">إدخال</option>
                     <option value="out">إخراج</option>
@@ -287,7 +194,9 @@ const ProductView = () => {
                   <input
                     type="number"
                     value={movementForm.rows}
-                    onChange={(e) => setMovementForm({ ...movementForm, rows: e.target.value })}
+                    onChange={(e) =>
+                      setMovementForm({ ...movementForm, rows: e.target.value })
+                    }
                   />
                 </label>
 
@@ -297,24 +206,32 @@ const ProductView = () => {
                     type="number"
                     value={movementForm.perRow}
                     onChange={(e) =>
-                      setMovementForm({ ...movementForm, perRow: e.target.value })
+                      setMovementForm({
+                        ...movementForm,
+                        perRow: e.target.value,
+                      })
                     }
                   />
                 </label>
               </div>
 
+              {/* ملاحظة */}
               <label className="form-row">
                 <span>ملاحظة</span>
                 <input
                   type="text"
                   value={movementForm.note}
-                  onChange={(e) => setMovementForm({ ...movementForm, note: e.target.value })}
+                  onChange={(e) =>
+                    setMovementForm({ ...movementForm, note: e.target.value })
+                  }
+                  placeholder="مثلاً: إدخال من المورد الرئيسي"
                 />
               </label>
 
+              {/* زر الإرسال */}
               <div className="form-actions">
                 <button className="primary-btn" onClick={handleAddMovement}>
-                  إضافة حركة
+                  ➕ إضافة حركة
                 </button>
               </div>
             </div>
@@ -328,7 +245,10 @@ const ProductView = () => {
           <div className="movement-panel small">
             <div className="panel-header">
               <h3>سجل الحركات</h3>
-              <button className="close-btn" onClick={() => setShowMovements(false)}>
+              <button
+                className="close-btn"
+                onClick={() => setShowMovements(false)}
+              >
                 ✕
               </button>
             </div>
@@ -351,7 +271,9 @@ const ProductView = () => {
                   {movements.length > 0 ? (
                     movements.map((m) => (
                       <tr key={m.movement_id || Math.random()}>
-                        <td>{new Date(m.created_at).toLocaleString("ar-EG")}</td>
+                        <td>
+                          {new Date(m.created_at).toLocaleString("ar-EG")}
+                        </td>
                         <td className={m.movment_type === "IN" ? "in" : "out"}>
                           {m.movment_type === "IN" ? "إدخال" : "إخراج"}
                         </td>
