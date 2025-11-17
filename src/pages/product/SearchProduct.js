@@ -59,12 +59,13 @@ useEffect(() => {
       )}
 
       <div className="content">
-        <ProductFilters  setProducts={setProducts} />
         <div className="right-section" style={{ flex: 1 }}>
           <div className="top-bar">
             <div className="product-count">{products.length} منتج</div>
             {/* <CustomDropDown options={dropdownOptions} /> */}
           </div>
+                  <ProductFilters  setProducts={setProducts} />
+
           <div className="product-grid">
             {products.map((product) => (
               <ProductCard key={product.product_id} product={product} />

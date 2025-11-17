@@ -16,7 +16,7 @@ function ProductCard({ product }) {
     product_id,
     name,
     image_url,
-    
+
     size_value,
     sizeUnit,
     price,
@@ -30,7 +30,9 @@ function ProductCard({ product }) {
   const totalStock = quantities.reduce((sum, q) => sum + (q.total || 0), 0);
 
   // ✅ كل المواقع من كل الكميات
-  const allLocations = quantities.flatMap((q) => q.locations || []);
+ 
+const allLocations = quantities.map((q) => q.location).filter(Boolean);
+
 
   return (
     <MDBCard
@@ -120,6 +122,7 @@ function ProductCard({ product }) {
           <div className="small">
             {allLocations.slice(0, 2).map((loc, idx) => (
               <div key={idx} className="text-muted">
+
                 🏬 {loc.warehouse_name} - 📍 {loc.location}
               </div>
             ))}

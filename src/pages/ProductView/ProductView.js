@@ -15,6 +15,12 @@ import ProductHeader from "./ProductHeader";
 import ProductQuantities from "./ProductQuantities";
 import ProductBarcodes from "./ProductBarcodes";
 
+import { useLookupData } from "../../hooks/useLookupData";
+import AddQuantityPanel from "./AddQuantityPanel";
+import {
+  fetchwarehouse
+} from "../../services/lookupService";
+
 const ProductView = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -28,8 +34,11 @@ const ProductView = () => {
     perRow: "",
     note: "",
   });
+  const [showAddQuantity, setShowAddQuantity] = useState(false);
 
   const printBarcode = usePrintBarcode();
+  const warehouseOptions = useLookupData(fetchwarehouse, "id", "name");
+  
 
   // Load product info
   useEffect(() => {
@@ -46,6 +55,8 @@ const ProductView = () => {
     };
     loadProduct();
   }, [id]);
+
+
 
   // Load product movements
   const loadMovements = async () => {
@@ -64,50 +75,61 @@ const ProductView = () => {
 
   // Add movement
   const handleAddMovement = async () => {
-    if (!movementForm.quantityLocationValue) {
-      return alert("الرجاء اختيار الموقع / الكمية");
-    }
-    if (!movementForm.rows || !movementForm.perRow) {
-      return alert("الرجاء إدخال عدد الكراتين وعدد القطع في كل كرتونة");
-    }
+  if (!movementForm.quantityLocationValue) {
+    return alert("الرجاء اختيار الموقع / الكمية");
+  }
 
-    // quantityLocationValue format is "quantityId-locationId" (locationId optional)
-    const [quantity_id_str, location_id_str] =
-      movementForm.quantityLocationValue.split("-");
-    const quantity_id = parseInt(quantity_id_str, 10);
-    const location_id = location_id_str ? parseInt(location_id_str, 10) : null;
+  const rows = parseInt(movementForm.rows, 10) || 0;
+  const perRow = parseInt(movementForm.perRow, 10) || 0;
+
+  if (rows <= 0 || perRow <= 0) {
+    return alert("يجب إدخال عدد الكراتين وعدد القطع بشكل صحيح");
+  }
+
+  const [quantity_id_str] = movementForm.quantityLocationValue.split("-");
+  const quantity_id = parseInt(quantity_id_str, 10);
+
+  try {
+    console.log({
+      quantityId: quantity_id,
+      rows,
+      perRow,
+      type: movementForm.type === "in" ? "IN" : "OUT",
+      note: movementForm.note,
+    });
+
+    await addMovement({
+      quantityId: quantity_id,
+      rows,
+      perRow,
+      type: movementForm.type === "in" ? "IN" : "OUT",
+      note: movementForm.note,
+    });
+
+    alert("تمت إضافة الحركة بنجاح ✅");
+
+    setMovementForm({
+      type: "in",
+      quantityLocationValue: "",
+      rows: "",
+      perRow: "",
+      note: "",
+    });
 
     try {
-      await addMovement({
-        quantity_id,
-        // backend expects movement type as "IN"/"OUT"
-        movment_type: movementForm.type === "in" ? "IN" : "OUT",
-        quantity_rows: parseInt(movementForm.rows, 10),
-        quantity_per_row: parseInt(movementForm.perRow, 10),
-        note: movementForm.note,
-        // include location_id if backend later supports it (safe to send now)
-        ...(location_id ? { location_id } : {}),
-      });
-
-      alert("تمت إضافة الحركة بنجاح ✅");
-
-      // Reset form and reload data
-      setMovementForm({
-        type: "in",
-        quantityLocationValue: "",
-        rows: "",
-        perRow: "",
-        note: "",
-      });
       await loadMovements();
-      // refresh product quantities to reflect changes
       const refreshed = await fetchProductById(id);
       setProduct(refreshed.data);
-    } catch (err) {
-      console.error("Failed to add movement", err);
-      alert("حدث خطأ أثناء إضافة الحركة");
+    } catch (e) {
+      console.error("Reload error", e);
     }
-  };
+
+  } catch (err) {
+    console.error("Failed to add movement", err);
+    alert("حدث خطأ أثناء إضافة الحركة");
+  }
+};
+
 
   if (loading) return <p className="loading-text">...جاري تحميل البيانات</p>;
   if (!product) return <p className="loading-text">تعذر العثور على المنتج</p>;
@@ -132,6 +154,12 @@ const ProductView = () => {
         <div className="info-column">
           <ProductHeader product={product} />
           <ProductQuantities product={product} />
+          <div className="text-end mt-3">
+  <button className="primary-btn" onClick={() => setShowAddQuantity(true)}>
+    ➕ إضافة كمية جديدة
+  </button>
+</div>
+
           <ProductBarcodes product={product} printBarcode={printBarcode} />
 
           {/* Movement / form box */}
@@ -298,6 +326,18 @@ const ProductView = () => {
           </div>
         </div>
       )}
+      {showAddQuantity && (
+  <AddQuantityPanel
+    productId={product.product_id}
+    warehouseOptions={warehouseOptions}
+    onClose={() => setShowAddQuantity(false)}
+    onAdded={async () => {
+      const refreshed = await fetchProductById(id);
+      setProduct(refreshed.data);
+    }}
+  />
+)}
+
     </div>
   );
 };

@@ -35,10 +35,18 @@ export const fetchProductByBarcode =(barcode) => {
   });
 };
 
+export const addQuantityToExistingProduct = async (product_id, quantity) => {
+  return api.post(`/addQuantity`, { product_id, quantity });
+};
+
 export const searchProducts = async (filters, searchTerm, lookups) => {
+  if (!lookups) lookups = {}; 
+
   const query = buildQuery(filters, searchTerm, lookups);
   if (!query) return [];
+  console.log(query);
   const res = await api.get(`/search?${query}`);
   return Array.isArray(res.data) ? res.data : [res.data];
 };
+
 

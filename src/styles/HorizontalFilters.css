@@ -1,0 +1,147 @@
+/* ==============================
+   GENERAL WRAPPER
+============================== */
+.horizontal-filters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-family: "Cairo", sans-serif;
+}
+
+/* ==============================
+   DROPDOWN BOX
+============================== */
+.dropdown-select {
+  position: relative;
+}
+
+.select-box {
+  background: #ffffff;
+  padding: 10px 16px;
+  border: 1.8px solid #ddd;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+  min-width: 120px;
+  text-align: center;
+}
+
+.select-box:hover {
+  border-color: #b8943c;
+  box-shadow: 0 0 8px rgba(0,0,0,0.08);
+}
+
+/* ==============================
+   DROPDOWN PANEL (OPTIONS)
+============================== */
+.dropdown-panel {
+  display: none;
+  position: absolute;
+  top: 48px;
+  right: 0;
+  width: 230px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e3e3e3;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  padding: 6px 0;
+  z-index: 30;
+  overflow: hidden;
+}
+
+.dropdown-select:hover .dropdown-panel {
+  display: block;
+}
+
+/* ==============================
+   EACH OPTION
+============================== */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.15s;
+  position: relative;
+}
+
+.checkbox-item:hover {
+  background: #faf5e8;
+}
+
+/* separator line */
+.checkbox-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  width: 85%;
+  height: 1px;
+  background: #f0f0f0;
+}
+
+/* round checkboxes */
+.checkbox-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ==============================
+   SIZE INPUT + SELECT
+============================== */
+.size-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.size-wrapper input,
+.size-wrapper select {
+  padding: 10px;
+  border-radius: 14px;
+  border: 1.6px solid #ddd;
+  outline: none;
+  transition: 0.2s;
+  font-size: 14px;
+}
+
+.size-wrapper input:focus,
+.size-wrapper select:focus {
+  border-color: #b8943c;
+  box-shadow: 0 0 8px rgba(0,0,0,0.08);
+}
+
+/* ==============================
+   CHIP AREA
+============================== */
+.chips-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.chip {
+  background: #fff4d4;
+  padding: 6px 12px;
+  border-radius: 14px;
+  font-size: 14px;
+  border: 1px solid #f0d89c;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+}
+
+.chip span {
+  font-size: 16px;
+  cursor: pointer;
+  color: #a15e2f;
+}
